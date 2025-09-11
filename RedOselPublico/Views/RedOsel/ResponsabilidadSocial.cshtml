@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Responsabilidad Social";
+}
+
+
+<section id="appResponsabilidadSocial">
+    <div class="container pt-4">
+        <div class="w-100 text-center">
+            <div class="title-container text-center">
+                <span class="border-text fw-bolder " style="color:#dfdfa1 !important">
+                    Responsabilidad Social
+                </span>
+                <div class="border-box" style="border-color:#dfdfa1 !important"></div>
+            </div>
+        </div>
+        <div class="m-0 fs-7-6 text-justify px-xl-5 px-md-2">
+            <p class="m-0 fs-6 px-xl-5 px-md-2" style="color: #dfdfa1 !important">
+                El compromiso con la sociedad y los miembros que la integran, han sido un pilar importante en el crecimiento y consolidación de Pinturas Osel
+
+                OSEL está comprometido en fomentar y mejorar la calidad de vida de la comunidad que lo rodea, así como el cuidado y mantenimiento del medio ambiente.
+            </p>
+        </div>
+    </div>
+
+    <div class="container my-2">
+        <h4 v-if="array.organizaciones.length === 0">
+            @* Sin datos disponibles *@
+        </h4>
+        <div class="d-flex justify-content-center flex-column align-items-center" v-show="array.organizaciones && array.organizaciones.length > 0">
+            <p class="text-start mb-1 p-0 fs-6 fw-semibold">Nos enorgullece colaborar con</p>
+
+            <br />
+
+            <div class="d-flex flex-wrap gap-5 w-100 h-100 flex-md-row justify-content-center my-2" v-for="(item, index) in array.organizaciones">
+                <a style="width:150px" v-for="(i, index) in item" :key="index" role="button" @@click="verOrganizacion(i)"
+                   class="text-decoration-none align-items-center d-flex flex-column">
+                    <img :alt="i.nombre"
+                         :src="i.src"
+                         :title="i.nombre"
+                         class="icon-circle-osel rounded-img px-0 bg-white  rounded-circle mb-3" />
+                    <span style="color:#dfdfa1 !important; border-color:#dfdfa1 !important;" class="fs-7 text-center text-icon d-flex align-items-center justify-content-center w-100 h-100 fw-bold  m-0 px-2 py-1 6 h3 border-osel color-text-osel">
+                        {{i.nombre}}
+                    </span>
+                </a>
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+            <div class="border-osel rounded-4 p-2 d-flex  justify-content-center align-items-center w-card-osel" v-if="htmlOrganizacion !== ''">
+
+                <img :src="srcImagen" class="rounded-img d-block d-md-none img-fluid rounded-circle mb-3 icon-card-osel" :alt="alt" />
+
+                <div style="height:380px;" class="bg-osel overflow-y-auto rounded-4 gap-5 px-5 py-2 w-card-osel" >
+                    <div class="pt-4" v-html="htmlOrganizacion" v-cloak>
+                    </div>
+                    <a :href="link" target="_blank" :title="link">{{link}}</a>
+                </div>
+                <div id="refFocus"></div>
+                <img :src="srcImagen" class="rounded-img d-none d-md-block img-fluid rounded-circle mb-3 icon-card-osel" :alt="alt" />
+            </div>
+
+            <!--<div class="col-12 col-md-6 col-xl-8 mt-0 pe-md-4 px-3">
+           
+                <div class="row">
+                    <div class="col-6 col-md-6 col-xl-3 mt-0" v-for="(item, index) in array.organizaciones" :key="index">
+                        <div style="height:170px;width:100%;" class="d-flex flex-column shadow-osel justify-content-end pb-1 align-items-center bg-white rounded-3 "
+                             @@click="verOrganizacion(item)" role="button" :class="item.active ? 'border border-dark border-2': ''">
+                            <figure class="p-2 h-100 m-0 text-center w-100 d-flex align-items-center justify-content-start flex-column">
+                                <img style="height:60px;max-width:100%;"
+                                     data-bs-toggle="tooltip"
+                                     data-bs-placement="top"
+                                     :alt="item.nombre"
+                                     :src="item.src"
+                                     :title="item.nombre" />
+                                <figcaption class="mt-2 fs-7 fw-bold">
+                                    {{item.nombre}}
+                                </figcaption>
+                              
+                            </figure>
+                            <button class="btn btn-custom-2 my-1 d-block">
+                                &nbsp;
+                                Ver más
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4 ps-md-4 text-justify mt-0">
+                <div class="px-3 py-0">
+                    <div class="card p-1">
+                        <div class="card-body pb-0 d-flex justify-content-start align-items-center">
+                            <img style="height:50px;max-width:100%;"
+                                 :src="srcImagen" v-cloak />
+                            &nbsp;
+                            <span class="fs-7 fw-semibold" v-cloak>{{tituloOrganizacion}}</span>
+                        </div>
+                        <div class="card-body" v-html="htmlOrganizacion" v-cloak>
+                        </div>
+                    </div>
+                </div>
+           
+            </div>-->
+        </div>
+
+
+    </div>
+</section>
+
+
+<script src="~/js/views/responsabilidad-social.js" asp-append-version="true"></script>

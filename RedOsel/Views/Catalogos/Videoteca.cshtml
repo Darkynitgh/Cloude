@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = "Videoteca";
+}
+
+
+<main id="appVideos">
+    <!-- Header -->
+    <div class="div-bg col-12 row">
+        <div class="col-3 col-md-1 p-2">
+            <div class="card ico-osel">
+                <i class="bg-osel icon icon-gradient lnr lnr-store"></i>
+            </div>
+        </div>
+        <div class="col-9 col-md-11 p-2">
+            <h5>Videoteca</h5>
+            <span>Administración de vídeos para Red Osel</span>
+        </div>
+    </div>
+
+
+    <!--Inicio acordeón-->
+    <div id="acordeonProductos" class="col-12">
+        <div class="card">
+            <div class="card-header bg-blue-dark"
+                 style="cursor:pointer"
+                 @@click="abreAcordion"
+                 data-toggle="collapse"
+                 data-target="#collapseOne"
+                 aria-expanded="true"
+                 aria-controls="collapseOne">
+                <div class="row">
+                    <div class="col-11">
+                        <h5 class="m-0 text-white">Filtros</h5>
+                    </div>
+                    <div class="col-1">
+                        <span :class="icono" class="text-white"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#acordeonProductos" aria-describedby="accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text btn-prepend-primary" id="btnGroupAddon2">Titulo</div>
+                                </div>
+                                <input type="text" class="form-control" v-model="value.tituloFiltro" aria-label="Input group" aria-describedby="btnGroupAddon2">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="btn btn-secondary" @@click="limpiar(0)">
+                                <span class="lnr lnr-undo">&nbsp;</span>
+                                Limpiar filtros
+                            </button>
+                            <button class="btn btn-prepend-primary ml-2" @@click="getVideos">
+                                <span class="lnr lnr-magnifier">&nbsp;</span>
+                                Consultar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin acordeón-->
+
+    <div class="col-12">
+        <button class="btn btn-prepend-primary" @@click="agregarVideo" title="Agregar vídeo">
+            <span class="bi bi-plus-square">&nbsp;</span>
+            Agregar vídeo
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="col-12 table-responsive mt-3">
+        <table class="table table-striped">
+            <thead class="header-table">
+                <tr>
+                    <th>Acciones</th>
+                    <th>
+                        <div class="d-flex justify-content-between align-items-end w-100">
+                            ID
+                            <div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.id.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                </div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.id.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex justify-content-between align-items-end w-100">
+                            Título
+                            <div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.titulo.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                </div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.titulo.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex justify-content-between align-items-end w-100">
+                            URL
+                            <div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.url.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                </div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.url.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex justify-content-between align-items-end w-100">
+                            Publicado
+                            <div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.publicado.iconoAsc" role="button" @@click="eligeFiltro(4)"></button>
+                                </div>
+                                <div class="w-100" style="max-height:13px;">
+                                    <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.videos.length === 0" :class="sorted.publicado.iconoDesc" role="button" @@click="eligeFiltro(4, false)"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="tienda in array.videos" :key="tienda.id_tienda" v-cloak>
+                    <td class="text-nowrap">
+                        <button class="btn btn-sm" @@click="getVideo(tienda)" title="Detalle Vídeo">
+                            <span class="lnr lnr-magnifier"></span>
+                        </button>
+                        <button class="btn btn-sm" @@click="videoElimina(tienda)" title="Eliminar Vídeo">
+                            <span class="bi bi-trash"></span>
+                        </button>
+                    </td>
+                    <td>{{ tienda.id_videoteca }}</td>
+                    <td>{{ tienda.titulo }}</td>
+                    <td>{{ tienda.url_video }}</td>
+                    <td>{{ tienda.publicar ? 'Si': 'No' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" ref="modalVideo" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{tituloModal}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md">
+                            <label class="label-primary m-0">Título</label>
+                            <input  class="cg-input-adicional p-1" type="text" v-model="value.titulo" />
+                        </div>
+                        <div class="col-12 col-md">
+                            <label class="label-primary m-0">URL</label>
+                            <input class="cg-input-adicional p-1" type="text" v-model="value.url" />
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="custom-control custom-switch h-100 w-100 d-flex align-items-center justify-content-start mt-3">
+                                <input type="checkbox" class="custom-control-input" ref="chkPublicado" v-model="check.publicado" />
+                                <label class="custom-control-label" @@click="$refs.chkPublicado.click()">Publicado</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item border-bottom " role="presentation">
+                                    <button class="nav-link active" ref="btnImagen" data-toggle="tab" data-target="#imagen" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                        Imagen
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content p-0" id="myTabContent">
+                                <div class="tab-pane fade p-0 show active" id="imagen" role="tabpanel">
+                                    <archivos ref="videos"
+                                              :id-tipo-multimedia="tipoMultimedia.listaPrecio"
+                                              :id-origen="idVideo">
+                                    </archivos>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="guardar">
+                        <span class="bi bi-check-circle"></span>
+                        Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary ml-1" data-dismiss="modal">
+                        <span class="bi bi-x-circle"></span>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<partial name="Componentes/Componente_Archivos" />
+
+<script src="~/js/views/videoteca.js" asp-append-version="true"></script>

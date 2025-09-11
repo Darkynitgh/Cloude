@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "Equipos";
+}
+
+<main id="appEquipos" class="row">
+    <div class="div-bg col-12 row">
+        <div class="col-3 col-sm-1 p-2">
+            <div class="card ico-osel">
+                <i class="bg-osel icon icon-gradient lnr lnr-briefcase h-100 d-flex align-items-center w-100"></i>
+            </div>
+        </div>
+        <div class="col-9 col-sm-11 p-2">
+            <h5 class="d-flex w-100 h-100 align-items-center">Marcas de equipos</h5>
+        </div>
+    </div>
+
+    <!-- Inicio acordeón -->
+    <div id="acordeonProductos" class="col-12 mt-3">
+        <div class="card">
+            <div class="card-header bg-blue-dark"
+                 style="cursor: pointer"
+                 @@click="abreAcordion"
+                 data-toggle="collapse"
+                 data-target="#collapseOne"
+                 aria-expanded="true"
+                 aria-controls="collapseOne">
+                <div class="row">
+                    <div class="col-11">
+                        <h5 class="m-0 text-white">Filtros</h5>
+                    </div>
+                    <div class="col-1">
+                        <span :class="icono" class="text-white"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne"
+                 class="collapse"
+                 aria-labelledby="headingOne"
+                 data-parent="#acordeonProductos">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text btn-prepend-primary">Nombre</div>
+                                </div>
+                                <input type="text" class="form-control" v-model="value.nombreFiltro" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="button" class="btn btn-secondary" @@click="limpiar(0)">
+                                <span class="lnr lnr-undo">&nbsp;</span>
+                                Limpiar filtros
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-prepend-primary" @@click="getOrganizaciones">
+                                <span class="lnr lnr-magnifier">&nbsp;</span>
+                                Consultar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Acordeón -->
+
+    <div class="col-12">
+        <div class="w-100 d-flex justify-content-between">
+            <button class="btn btn-prepend-primary" @@click="agregaMarcaEquipo">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar marca
+            </button>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+
+        <div class="table-responsive" v-cloak>
+            <table class="table table-striped" v-cloak>
+                <thead class="header-table">
+                    <tr>
+                        <th>
+                            Acciones
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Nombre
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.nombre.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.nombre.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Equipos
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.url.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.url.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Publicado
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.publicado.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.marcas.length === 0" :class="sorted.publicado.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-cloak v-for="item in array.marcas" :key="item.id_equipo_marca">
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm" @@click="getMarca(item)" title="Detalle empresa">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <button class="btn btn-sm" @@click="marcaElimina(item)" title="Eliminar empresa">
+                                <span class="bi bi-trash"></span>
+                            </button>
+                        </td>
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.total_equipo}}</td>
+                        <td>{{item.publicado ? 'Sí': 'No'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="array.marcas.length === 0">
+                <h4>Sin datos</h4>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" ref="modalEmpresa" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{tituloModal}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <label class="m-0 label-primary">Nombre</label>
+                            <input type="text" class="cg-input-adicional p-1" v-model="value.nombre" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="label-primary m-0">Orden</label>
+                            <input v-model="value.orden"
+                                   type="number"
+                                   step="1"
+                                   min="0"
+                                   max="150"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off"
+                                   onfocus="this.select()"
+                                   inputmode="numeric" />
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-start mt-2">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="check.publicado">
+                                    <label class="custom-control-label" for="customSwitch1">Publicado</label>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="col-12 col-md-4">
+                            <div>
+                                <button class="btn-prepend-primary my-2 btn" @@click="agregaArchivo(1)">
+                                    <i class="bi bi-search"></i>
+                                    &nbsp;
+                                    Agregar logo marca
+                                </button>
+                                &nbsp;
+                                <i><small>(197px x 100px)</small></i>
+                            </div>
+                            <a class="d-block w-100" v-if="nombreArchivo.trim() !== ''">Archivo elegido:&nbsp;{{nombreArchivo}}</a>
+                            <a class="d-block w-100" v-if="logo.trim() !== ''" target="_blank" :href="hrefLogo">Archivo actual:&nbsp;{{logo}}</a>
+                        </div>
+
+                        <div class="col-12 p-0 mt-3">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item border-bottom" role="presentation">
+                                    <button class="nav-link" :disabled="disabled.equipos" ref="tabEquipos" data-toggle="tab" data-target="#equipos" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                        Equipos
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade p-0" id="equipos" role="tabpanel">
+                                    <equipos ref="equipos"
+                                            :id-tipo-multimedia="tipoMultimedia.equipo"
+                                            :id-origen="idEquipoMarca">
+                                    </equipos>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="guardar">
+                        <span class="bi bi-check-circle"></span>
+                        Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary ml-1" data-dismiss="modal">
+                        <span class="bi bi-x-circle"></span>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<partial name="Componentes/Componente_Archivos" />
+
+<script src="~/js/views/equipos.js" asp-append-version="true"></script>

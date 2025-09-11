@@ -1,0 +1,405 @@
+﻿
+
+<main id="appUsuarios">
+    <input hidden class="d-none" v-show="false" value="@ViewBag.tipo" ref="inputTipo" />
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-md-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel icon icon-gradient lnr lnr-users"></i>
+                </div>
+            </div>
+            <div class="col-9 col-md-11 p-2">
+                <h5>@ViewBag.Title</h5>
+                <span>Administración de usuarios</span>
+            </div>
+        </div>
+
+        <!-- Inicio acordeón -->
+        <div id="acordeonProductos" class="col-12 mt-3" v-show="shTabla">
+            <div class="card">
+                <div class="card-header bg-blue-dark"
+                     style="cursor: pointer"
+                     @@click="abreAcordion"
+                     data-toggle="collapse"
+                     data-target="#collapseOne"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    <div class="row">
+                        <div class="col-11">
+                            <h5 class="m-0 text-white">Filtros</h5>
+                        </div>
+                        <div class="col-1">
+                            <span :class="icono" class="text-white"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapseOne"
+                     class="collapse"
+                     aria-labelledby="headingOne"
+                     data-parent="#acordeonProductos"
+                     aria-describedby="accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Usuario/Nombre</div>
+                                    </div>
+                                    <input type="text" class="form-control" autocomplete="not-user" v-model="usuarioFiltro" />
+                                </div>
+                            </div>
+                            <div v-if="esVistaUsuariosInternos" 
+                                class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Correo Electrónico</div>
+                                    </div>
+                                    <input type="text" class="form-control" v-model="correoFiltro" />
+                                </div>
+                            </div>
+                            <div v-if="esVistaUsuariosDistribuidor"
+                                 class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Razón Social</div>
+                                    </div>
+                                    <input type="text" 
+                                            class="form-control" 
+                                            v-model.trim="razonSocialFiltro" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="btn btn-secondary" @@click="limpiar">
+                                    <span class="lnr lnr-undo">&nbsp;</span>
+                                    Limpiar filtros
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-prepend-primary" @@click="buscar">
+                                    <span class="lnr lnr-magnifier">&nbsp;</span>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Acordeón -->
+
+        <div class="col-12 mt-3" v-show="shTabla">
+            <button class="btn btn-prepend-primary mb-2" @@click="agregarUsuario">
+                <span class="lnr lnr-user">&nbsp;</span>
+                Agregar usuario
+            </button>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="header-table">
+                        <tr>
+                            <th></th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Correo electrónico
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.correo.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.correo.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Usuario
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.usuario.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.usuario.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Nombre
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.nombre.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.nombre.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th v-if="tipo === 1">
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    SAGE
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.sage.iconoAsc" role="button" @@click="eligeFiltro(8)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.sage.iconoDesc" role="button" @@click="eligeFiltro(8, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th v-if="tipo === 0">
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Teléfono
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.telefono.iconoAsc" role="button" @@click="eligeFiltro(4)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.telefono.iconoDesc" role="button" @@click="eligeFiltro(4, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th v-if="tipo === 1">
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Fecha Contraseña
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.fecha.iconoAsc" role="button" @@click="eligeFiltro(5)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.fecha.iconoDesc" role="button" @@click="eligeFiltro(5, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Perfil
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.perfil.iconoAsc" role="button" @@click="eligeFiltro(6)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.perfil.iconoDesc" role="button" @@click="eligeFiltro(6, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Estatus
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.estatus.iconoAsc" role="button" @@click="eligeFiltro(7)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="usuarios.length === 0" :class="sorted.estatus.iconoDesc" role="button" @@click="eligeFiltro(7, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in usuarios" :key="item.id_usuario">
+                            <td class="text-nowrap">
+                                <button class="btn" title="Editar Usuario" @@click="editarUsuario(item)">
+                                    <span class="lnr lnr-pencil"></span>
+                                </button>
+                                <button class="btn" title="Eliminar Usuario" @@click="usuarioElimina(item)">
+                                    <span class="lnr lnr-trash"></span>
+                                </button>
+                            </td>
+                            <td>{{item.correo}}</td>
+                            <td>{{item.usuario}}</td>
+                            <td>{{item.nombre}}</td>
+                            <td v-if="tipo === 1">{{item.sage}}</td>
+                            <td v-if="tipo === 0">{{item.telefono}}</td>
+                            <td v-if="tipo === 1">{{item.fecha_cambio}}</td>
+                            <td>{{item.perfil}}</td>
+                            <td>{{item.estatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div v-if="(usuarios?.length || 0) === 0" v-cloak>
+                <span class="h6">No se han encontrado resultados para la búsqueda...</span>
+            </div>
+        </div>
+
+        <!-- Modal: Usuario -->
+        <div class="modal fade"
+             id="modal_usuario"
+             data-backdrop="static"
+             data-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="staticBackdropLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{titulo_modal}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Usuario</label>
+                                <input v-model="usuario.username"
+                                       type="text"
+                                       id="txtUsuario"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" 
+                                       :disabled="idUsuario !== 0"/>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Contraseña</label>
+                                <div class="d-flex" style="align-items:stretch">
+                                    <input v-model="usuario.password"
+                                           :type="!show.password ? 'password':'text'"
+                                           id="txtContrasena"
+                                           required
+                                           class="cg-input-adicional p-1"
+                                           autocomplete="off"
+                                           @@change="cambiaPassword" />
+                                    <div class="d-flex align-items-center" 
+                                            style="border-bottom: 1px solid #e2e2e2 !important;">
+                                           <i class="bi cursor-pointer"
+                                           @@click="show.password = !show.password"
+                                           :class="{'bi-eye':!show.password,'bi-eye-slash':show.password}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Confirmar contraseña</label>
+                                <div class="d-flex" style="align-items:stretch">
+                                    <input v-model="usuario.confirmPassword"
+                                           :type="!show.confirmPassword ? 'password':'text'"
+                                           id="txtContrasena2"
+                                           required
+                                           class="cg-input-adicional p-1"
+                                           autocomplete="off"
+                                           @@change="cambiaPassword" />
+                                    <div class="d-flex align-items-center"
+                                         style="border-bottom: 1px solid #e2e2e2 !important;">
+                                        <i class="bi cursor-pointer"
+                                           @@click="show.confirmPassword = !show.confirmPassword"
+                                           :class="{'bi-eye':!show.confirmPassword,'bi-eye-slash':show.confirmPassword}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <h5 class="mt-2">Datos Generales</h5>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Nombre</label>
+                                <input v-model="usuario.nombre"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Apellidos</label>
+                                <input v-model="usuario.apellidos"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Correo electrónico</label>
+                                <input v-model="usuario.correo"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4" v-if="tipo === 0">
+                                <label class="label-primary">Teléfono</label>
+                                <input v-model="usuario.telefono"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>
+                               <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Perfil</label>
+                                <select v-model="usuario.idPerfil"
+                                        class="form-control select-custom-po">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="perfil in perfiles" :key="perfil.id_perfil" :value="perfil.id_perfil">
+                                        {{perfil.perfil}}
+                                    </option>
+                                </select>
+                            </div>                                              
+                            <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label-primary">Estatus</label>
+                                <select v-model="usuario.idEstatus"
+                                        class="form-control select-custom-po">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="estatu in estatus" :key="estatu.id_clave" :value="estatu.id_clave">                                        
+                                        {{estatu.cadena}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4" v-if="tipo === 1">
+                                <label class="label-primary">Razón Social</label>
+                                <input v-model="usuario.encargado"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4" v-if="tipo === 1">
+                                <label class="label-primary">Código Aux/Sage</label>
+                                <input v-model="usuario.auxSage"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                            </div>  
+                            <div class="col-12 col-sm-6 col-md-4" v-if="tipo === 1">
+                                <label class="label-primary">Zona Ventas</label>
+                                <select v-model="ddl.zona"
+                                        class="form-control select-custom-po">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="estatu in array.zonas" :key="estatu.id_clave" :value="estatu.id_clave">
+                                        {{estatu.cadena}}&nbsp;({{estatu.mensaje}})
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4" v-if="tipo === 1">
+                                <label class="label-primary">Vendedor</label>
+                                <select v-model="ddl.vendedor"
+                                        class="form-control select-custom-po">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="estatu in array.vendedores" :key="estatu.id_clave" :value="estatu.id_clave">
+                                        {{estatu.cadena}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardar">
+                            <span class="lnr lnr-checkmark-circle">&nbsp;</span>Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <span class="lnr lnr-cross-circle">&nbsp;</span>Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script src="~/js/views/usuarios.js" asp-append-version="true"></script>

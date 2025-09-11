@@ -1,0 +1,90 @@
+﻿
+
+<main id="appContenidoHtml">
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-md-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel w-100 h-100 d-flex align-items-center justify-content-center icon icon-gradient bi bi-exclamation-circle"></i>
+                </div>
+            </div>
+            <div class="col-9 col-md-11 p-2">
+                <h5>Contenido HTML</h5>
+                <span>Administración de contenido dinámico HTML para el sitio de <i><u>Red Osel Distribuidores</u></i></span>
+            </div>
+        </div>
+
+
+        <div class="col-12 mt-3">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="header-table">
+                        <tr>
+                            <th>Acción</th>
+                            <th>Página</th>
+                            <th>Última modificación</th>
+                            <th>Vista previa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-cloak v-for="item in array.contenidos" :key="item.id_contenido_html">
+                            <td class="text-nowrap">
+                                <button class="btn" :title="'Editar ' + item.nombre_contenido" @@click="getContenido(item)">
+                                    <span class="lnr lnr-pencil"></span>
+                                </button>
+                            </td>
+                            <td>{{item.nombre_contenido}}</td>
+                            <td>{{item.fecha}}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info" @@click="preview(item)">
+                                    <span class="bi bi-eye"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalContenido" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{tituloModal}}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="taContenido"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardar">
+                            <span class="lnr lnr-checkmark-circle">&nbsp;</span>Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <span class="lnr lnr-cross-circle">&nbsp;</span>Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="preview" data--backdrop="static" data--keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-tite" id="staticBackdropLabel">Vista Previa</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body" id="modalBody" v-html="contenido">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/js/views/contenido-html.js" asp-append-version="true"></script>

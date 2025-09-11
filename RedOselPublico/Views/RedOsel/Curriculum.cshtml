@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Currículum";
+}
+
+<section>
+    <div class="background-container-banner py-2 position-relative d-block" id="divBanner">
+        <img class="bg-banner d-none d-none" id="bannerCurriculum" alt="banner">
+        <div class="container d-flex flex-column">
+            <div class="container-text d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+                <!-- Columna de bienvenida -->
+                <div class="col-12  p-0 m-0 text-center text-md-start">
+                    <h3 class="fw-bold m-0 text-white text-shadow-osel">
+                        CURRÍCULUM
+                    </h3>
+                    <p class="text-base text-light m-0  fs-6 d-md-block d-none">
+                        En este apartado encontrarás información, tanto detallada como breve, acerca de Pinturas Osel y que te servirá como presentación ante tus clientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-sm my-2 mt-3">
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <!-- Primera card -->
+            <div class="rounded-4 card-manual">
+                <div class="col-12 p-1">
+                    <p class="m-0 text-lg fw-bold text-center" style="color: #2196f3;">
+                        Currículum extendido
+                    </p>
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <a href="https://www.calameo.com/read/0032277875ac03746025a" target="_blank">
+                            <img src="~/imagenes/Manuales/thumb-curriculum-extendido.png" class="img-curriculum" alt="Pinturas Osel">
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <a role="link" :title="i.archivo" :href="i.ruta"  target="_blank" href="~/Documentos/Manuales/Curriculum_Osel_2024.pdf" class="me-2 mb-1 btn btn-custom-2 mt-2">
+                            Descargar
+                            &nbsp;
+                            <span class="bi bi-download"></span>
+                        </a>
+                    </div>
+                </div>
+              
+            </div>
+
+            <!-- Segunda card -->
+            <div class="rounded-4 card-manual">
+                <div class="col-12 p-1">
+                    <p class="m-0 text-lg fw-bold text-center" style="color: #2196f3;">
+                        Currículum corto
+                    </p>
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <a href="https://www.calameo.com/read/003227787b0fbc8546617" target="_blank">
+                            <img src="~/imagenes/Manuales/portada_cv_corto_2022.png" class="img-identidad" alt="Pinturas Osel">
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <a role="link" :title="i.archivo" :href="i.ruta"  target="_blank" href="~/Documentos/Manuales/curriculum-osel-express.pdf" class="me-2 mb-1 btn btn-custom-2 mt-2">
+                            Descargar
+                            &nbsp;
+                            <span class="bi bi-download"></span>
+                        </a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <p class="text-center txt-curriculum">
+        <strong>* </strong>Selecciona la imagen y podrás hojear electrónicamente estos dos documentos.
+    </p>
+    <p class="text-center txt-curriculum">
+        Para cualquier información adicional comunícate al departamento de Mercadotecnia (mercadotecnia@pinturasosel.com)
+    </p>
+
+</section>
+
+
+<script src="~/js/views/curriculum.js" asp-append-version="true"></script>

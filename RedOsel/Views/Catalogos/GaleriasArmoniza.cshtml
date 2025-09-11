@@ -1,0 +1,132 @@
+﻿
+
+
+<main class="row" id="appGaleriaArmoniza">
+    <input hidden value="@ViewBag.tipo" ref="hdnTipo" />
+
+    <div class="div-bg col-12 row">
+        <div class="col-3 col-sm-1 p-2">
+            <div class="card ico-osel">
+                <i class="bg-osel icon icon-gradient lnr lnr-briefcase h-100 d-flex align-items-center w-100"></i>
+            </div>
+        </div>
+        <div class="col-9 col-sm-11 p-2">
+            <h5 class="d-flex w-100 h-100 align-items-center">@ViewBag.Title</h5>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="w-100 d-flex justify-content-between">
+            <button class="btn btn-prepend-primary" @@click="agregar" :disabled="disabled.agregar">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar @ViewBag.Title
+            </button>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+
+        <div class="table-responsive" >
+            <table class="table table-striped" >
+                <thead class="header-table">
+                    <tr>
+                        <th>
+                            Acciones
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Título
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.titulo.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.titulo.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Orden
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.orden.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.orden.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Fecha alta
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.fecha.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.archivos.length === 0" :class="sorted.fecha.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-cloak v-for="item in array.archivos" :key="item.id_multimedia">
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm" @@click="getArchivo(item)" title="Detalle" :disabled="disabled.agregar">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <button class="btn btn-sm" @@click="elimina(item)" title="Eliminar" :disabled="disabled.agregar">
+                                <span class="bi bi-trash"></span>
+                            </button>
+                        </td>
+                        <td>{{item.titulo}}</td>
+                        <td>{{item.orden}}</td>
+                        <td>{{getDate(item.fecha_alta)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="array.archivos.length === 0">
+                <h4>Sin datos</h4>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" ref="modalArchivo" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+                    <archivos ref="archivo"
+                              :id-origen="idMultimedia"
+                              :id-tipo-multimedia="tipoMultimedia.archivo"
+                              :es-modal="true"
+                              @@cerrar-modal="cerrarModal"
+                              @@activa="activa"
+                              @@get-archivos="getArchivos"
+                              @@abre-modal="abreModal">
+                    </archivos>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<partial name="Componentes/Componente_Archivos" />
+
+<script src="~/js/views/galerias-armoniza.js" asp-append-version="true"></script>

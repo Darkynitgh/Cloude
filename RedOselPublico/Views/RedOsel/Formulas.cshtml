@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Fórmulas";
+}
+
+<section id="appReformulas">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">Fórmulas</span>
+            <div class="border-box"></div>  
+        </div>
+        <p class="text-normal m-0 fs-7 text-center">
+        </p>
+    </div>
+
+    <div class="container mb-3 mt-5 py-2 ">
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-5">
+            <template v-for="item in menu" v-cloak>
+            @* <a role="button" target="_self" href="~/RedOsel/GaleriasColor" class="d-flex align-items-center flex-column text-decoration-none mx-3">
+                <img src="~/imagenes/manuales/formulas-galeriascolor.png" class="icon-circle-osel  px-0 rounded-img img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span class="fw-bold text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel">Galerías de Color</span>
+            </a>
+            <a role="button" target="_self" href="~/RedOsel/Reformulaciones" class="d-flex flex-column align-items-center text-decoration-none mx-3">
+                <img src="~/imagenes/manuales/formulas-reformulas.png" class="icon-circle-osel  px-0 rounded-img img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span class="fw-bold text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel">Reformulaciones</span>
+            </a> *@
+                <a role="button" 
+                    target="_self"
+                   :href="urlContent(item)"
+                   class="d-flex align-items-center flex-column text-decoration-none mx-3">
+                    <img :src="urlImage(item)"
+                         class="icon-circle-osel  px-0 rounded-img img-fluid rounded-circle mb-3"
+                         :alt="item.img_descripcion" />
+                    <span class="fw-bold text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel">{{ item.descripcion }}</span>
+                </a>
+            </template>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <!--<div class="modal fade" ref="modalContenido" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header text-bg-dark">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        <button class="btn btn-sm btn-success" title="Regresar" @@click="regresar(1)" v-if="show.regresar">
+                            <i class="bi bi-chevron-left"></i>
+                            Regresar
+                        </button>
+                        {{tituloModal}}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body overflow-y-auto" style="height:500px">
+
+                    <div v-if="show.reformulas" class="row">
+                        <div v-cloak v-for="item in array.reformulas" class="col-12 col-md-6 px-3">
+                            <div class="flex-md-column card shadow-osel border px-3 py-4 flex-lg-row align-items-center rounded-4 justify-content-sm-between d-flex">
+                                <div class="d-flex w-100 h-100 justify-content-between align-items-lg-center gap-3">
+                                    <div class="d-flex flex-column align-items-md-center align-items-lg-start">
+                                        <p class="m-0 text-lg fw-bold text-xs text-md-center text-lg-start">
+                                            {{item.nombre}}
+                                            <br />
+                                            <span class="text-date fw-bold text-blue">
+                                                Fecha act. {{item.fecha}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <button role="button" class="me-2 btn btn-custom-2 mt-2" @@click="verMas(item)">
+                                        Ver más
+                                        &nbsp;
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12" v-if="array.reformulas.length === 0">
+                            <h3 class="fw-bold text-center">Sin reformulaciones disponibles disponibles</h3>
+                        </div>
+                    </div>
+
+                    <div class="" v-if="show.detalleReformulas">
+                        <h6 class="fs-5 text-dark">                            
+                            {{tituloReformula}}
+                        </h6>
+                        
+                        <table v-if="array.formulas && array.formulas.length > 0">
+                            <tbody>
+                                <tr v-for="item in array.formulas">
+                                    <td class="p-2">
+                                        <a role="link" class="text-decoration-none text-dark" download :href="item.href" target="_blank">
+                                            <i class="bi bi-download btn btn-light btn-sm shadow-osel"></i>
+                                            &nbsp;{{item.titulo}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div v-if="array.formulas.length === 0">
+                            <h6 class="fw-semibold">Sin reformulaciones disponibles</h6>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>-->
+</section>
+
+
+<script src="~/js/views/formulas.js" asp-append-version="true"></script>

@@ -1,0 +1,162 @@
+﻿<!--ALERTAS ALERTAS ALERTAS ALERTAS-->
+
+<div class="modal fade " id="modal_success" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-radious">
+            <div class="modal-body p-0">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <div class="alerts divAlerta alertaVerde alerta fade show" role="alert" aria-live="assertive" aria-atomic="true" id="alerta_custom">
+                        <div class="alerts-header">
+                            <span><b></b></span>
+                            <strong class="mr-auto"></strong>
+                            <small></small>
+                        </div>
+                        <div class="alerts-body">
+                            <div style="height: auto;">
+                                <div class="text-center mb-3">
+                                    <i class="icon icon-verde" aria-hidden="true" id="alert_icono"></i>
+                                </div>
+                                <div class="alerts-title" id="divTitleSuccess">
+                                    <p id="pTitleSuccess"></p>
+                                </div>
+                                <div id="divMensajeSuccess">
+                                    <p id="subPSuccess" class="text-justify m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alerts-footer m-auto"><button class="btn btn-outline-success" data-dismiss="modal">OK</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_error" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-radious">
+            <div class="modal-body p-0">
+                <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center h-100">
+                    <div class="alerts divAlerta alertaRoja alerta fade show" role="alert" aria-live="assertive" aria-atomic="true" id="alerta_custom">
+                        <div class="alerts-header">
+                            <span><b></b></span>
+                            <strong class="mr-auto"></strong>
+                            <small></small>
+                        </div>
+                        <div class="alerts-body">
+                            <div style="height: auto;">
+                                <div class="text-center mb-3">
+                                    <i class="icon icon-roja" aria-hidden="true" id="alert_icono"></i>
+                                </div>
+                                <div class="alerts-title" id="divTitleError">
+                                    <p id="pTitleError"></p>
+                                </div>
+                                <div id="divMensajeError">
+                                    <p class="m-0 text-justify" id="subPError"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alerts-footer m-auto"><button class="btn btn-outline-danger" data-dismiss="modal">OK</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_info" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-radious">
+            <div class="modal-body p-0">
+                <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center h-100">
+                    <div class="alerts divAlerta alertaInfo alerta fade show" role="alert" aria-live="assertive" aria-atomic="true" id="alerta_custom">
+                        <div class="alerts-header py-3">
+                            <span><b></b></span>
+                            <strong class="mr-auto"></strong>
+                        </div>
+                        <div class="alerts-body">
+                            <div style="height: auto;">
+                                <div class="text-center mb-3">
+                                    <i class="icon icon-azul" aria-hidden="true" id="alert_icono"></i>
+                                </div>
+                                <div class="alerts-title" id="divTitleInfo">
+                                    <p id="pTitleInfo"></p>
+                                </div>
+                                <div id="divMensajeInfo">
+                                    <p id="subPInfo" class="text-justify m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alerts-footer m-auto"><button class="btn btn-alerta-ok" data-dismiss="modal">OK</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_confirm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-radious">
+            <div class="modal-body p-0">
+                <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center h-100">
+                    <div class="alerts divAlerta alertaConfirm alerta fade show" role="alert" aria-live="assertive" aria-atomic="true" id="alerta_custom">
+                        <div class="alerts-header">
+                            <span><b></b></span>
+                            <strong class="mr-auto"></strong>
+                            <small></small>
+                        </div>
+                        <div class="alerts-body">
+                            <div style="height: auto;">
+                                <div class="text-center mb-3">
+                                    <i></i>
+                                </div>
+                                <div class="alerts-title">
+                                    <p id="pConfirmacion" class="text-justify m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alerts-footer m-auto">
+                            <button class="btn btn-alerta-aceptar" id="btnAceptarAlert">Aceptar</button>
+                            <button class="btn btn-outline-secondary" id="btnCancelarAlert">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_warning" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-radious">
+            <div class="modal-body p-0">
+                <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center h-100">
+                    <div class="alerts divAlerta alertaAmarilla alerta fade show" role="alert" aria-live="assertive" aria-atomic="true" id="alerta_custom">
+                        <div class="alerts-header">
+                            <span><b></b></span>
+                            <strong class="mr-auto"></strong>
+                            <small></small>
+                        </div>
+                        <div class="alerts-body">
+                            <div style="height: auto;">
+                                <div class="text-center mb-3">
+                                    <i class="icon icon-amarilla" aria-hidden="true" id="alert_icono"></i>
+                                </div>
+                                <div class="alerts-title" id="divTitleWarning">
+                                    <p id="pTitleWarning"></p>
+                                </div>
+                                <div id="divMensajeWarning">
+                                    <p id="subPWarning" class="text-justify m-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alerts-footer m-auto"><button class="btn btn-outline-warning" data-dismiss="modal">OK</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/views/alertas.js" asp-append-version="true"></script>

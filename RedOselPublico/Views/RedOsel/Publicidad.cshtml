@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Publicidad";
+}
+
+<section>
+    <div class="background-container-banner  py-2 position-relative d-block" id="divBanner">
+        <img class="bg-banner d-none" id="bannerPublicidad" alt="banner">
+        <div class="container d-flex flex-column">
+            <div class="container-text d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+                <!-- Columna de bienvenida -->
+                <div class="col-12  p-0 m-0 text-center text-md-start">
+                    <h3 class="fw-bold m-0 text-white text-shadow-osel">
+                        PUBLICIDAD
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-sm my-2 mt-3">
+        <div class="w-100 d-flex justify-content-center">
+            <div class="rounded-4 card-manual">
+                <div class="col-12 p-1">
+                    <p class="m-0 text-lg fw-bold text-center" style="color: #2196f3;">
+                        Manual de publicidad
+                    </p>
+                    <div class="d-flex justify-content-center align-items-center mt-2">
+                        <a href="https://www.redosel.com/archivos2014/manualpublicidad/manual_publicidad_2022.pdf" target="_blank">
+                            <img src="~/imagenes/Manuales/manual-publicidad.jpg" class="img-publicidad" alt="Pinturas Osel">
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <a role="link" :title="i.archivo" :href="i.ruta" download target="_blank" href="~/Documentos/Manuales/manual_publicidad_2022.pdf" class="me-2 mb-1 btn btn-custom-2 mt-2">
+
+                            Descargar
+                            &nbsp;
+                            <span class="bi bi-download"></span>
+                        </a>
+                    </div>
+                </div>
+                <p class="text-center txt-identidad">
+                    <strong>* </strong>Da clic en la imagen para ver el contenido de este documento.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script src="~/js/views/publicidad.js" asp-append-version="true"></script>

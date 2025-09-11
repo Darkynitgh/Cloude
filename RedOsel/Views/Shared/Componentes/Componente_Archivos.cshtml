@@ -1,0 +1,193 @@
+﻿
+
+<template id="compoArchivos">
+    <div :class="bgCard" class="pb-4 pt-2 px-2 w-100 h-100"  @@mouseleave="closeDropDown">
+        <button class="btn btn-info text-white" @@click="agregarArchivos" v-if="!nuevo" :disabled="array.archivos.length === 1 && registroUnico">
+            <i class="bi bi-plus-square"></i>
+            Agregar {{nombreMultimedia}} 
+        </button>
+
+        <div class="mt-2 py-2" v-show="nuevo">
+            <div class="row w-100 h-100 m-0 py-2 shadow rounded border border-dark border-1 bg-light" v-show="show.altaArchivo">   
+                <h5 class="w-100 px-2" v-if="nuevo && idMultimedia === 0">Nuevo(a) {{nombreMultimedia}}&nbsp;<small><i>{{especificacion}}</i></small></h5>
+                <h5 class="w-100 px-2" v-else>Edición {{nombreMultimedia}}&nbsp;<small><i>{{especificacion}}</i></small></h5>
+
+                <div class="col-12 col-md-4" v-if="campos.input.titulo">
+                    <label class="label-primary m-0">Título</label>
+                    <textarea v-model="value.titulo" class="cg-input-adicional p-1" :placeholder="'Máximo ' + extension.titulo + ' caracteres'"
+                              :maxlength="extension.titulo" rows="4"></textarea>
+                    @* <input type="text" v-model="value.titulo" class="cg-input-adicional p-1" :placeholder="'Máximo ' + extension.titulo + ' caracteres'"
+                            :maxlength="extension.titulo_extension" /> *@
+                </div>
+
+                <div class="col-12 col-md-4" v-if="campos.dropDown.tipoArchivo">
+                    <label class="label-primary m-0">Tipo de archivo</label>
+                    <select v-model="ddl.tipoArchivo" class="form-control  select-custom-po p-1">
+                        <option value="0">Seleccione</option>
+                        <option v-for="item in array.tipoArchivo" :value="item.id_clave">{{item.Cadena}}</option>
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-4" v-if="campos.input.descripcion">
+                    <label class="label-primary m-0">Descripción</label>
+                    <textarea class="cg-input-adicional p-1" rows="4" v-model="value.descripcion" :maxlength="extension.descripcion" :placeholder="'Máximo ' + extension.descripcion + ' caracteres'"></textarea>
+                    @* <input type="text" v-model="value.descripcion" class="cg-input-adicional p-1" :placeholder="'Máximo ' + extension.descripcion + ' caracteres'"
+                            :maxlength="extension.descripcion_extension" /> *@
+                </div>
+
+                <div class="col-12 col-md-4" v-if="campos.input.orden">
+                    <label class="label-primary m-0">Orden</label>
+                    <input type="number" v-model="value.orden" class="cg-input-adicional p-1" step="1" min="0" max="9999" />
+                </div>
+
+                <div class="col-12 col-md-4" v-show="campos.input.fecha">
+                    <label class="label-primary m-0">Fecha</label>
+                    <input type="text" v-model="value.fecha" class="cg-input-adicional p-1 flatpickr-date form-control bg-white" placeholder="dd/mm/aaaa" />
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div>
+                        <label class="w-100 m-0">&nbsp;</label>
+                        <button class=" btn-prepend-primary btn" @@click="eligeArchivo">
+                            <i class="bi bi-search"></i>
+                            Elegir un archivo
+                        </button>
+                        <a v-if="nombreArchivoElegido.trim() !== '' && !nuevo" class="w-100 nav-link p-0 m-0 d-block">Archivo elegido: {{nombreArchivoElegido}}</a>
+                    </div>
+                    <a v-if="nombreArchivoElegido.trim() !== '' && nuevo" class="w-100 nav-link p-0 m-0 d-block">Archivo elegido: {{nombreArchivoElegido}}</a>
+
+                    <a v-if="descarga.trim() !== ''" :href="descarga" target="_blank" style="z-index: 1; position: relative;" class="w-100 mt-2 d-block" role="button">Archivo actual:&nbsp;{{nombreArchivo}}</a>
+                </div>
+
+                <div class="col-12 col-md-4" v-if="campos.input.imagen">
+                    <div>
+                        <label class="w-100 m-0">&nbsp;</label>
+                        <button class=" btn-prepend-primary btn" @@click="eligeImagen">
+                            <i class="bi bi-search"></i>
+                            Elegir una imagen
+                        </button>
+                        <a v-if="nombreImagenElegida.trim() !== '' && !nuevo" class="w-100 nav-link p-0 m-0 d-block">Imagen elegido: {{nombreImagenElegida}}</a>
+                    </div>
+                    <a v-if="nombreImagenElegida.trim() !== '' && nuevo" class="w-100 nav-link p-0 m-0 d-block">Imagen elegido: {{nombreImagenElegida}}</a>
+
+                    <a v-if="descargaImagen.trim() !== ''" :href="descargaImagen" target="_blank" style="z-index: 1; position: relative;" class="w-100 mt-2 d-block" role="button">Imagen actual:&nbsp;{{nombreImagen}}</a>
+                </div>
+
+                <div class="col-12 d-flex align-items-end mt-4">
+                    <buttton class="btn btn-outline-primary" @@click="guardarArchivo">
+                        <i class="bi bi-floppy"></i>
+                        Guardar
+                    </buttton>
+                    <buttton class="btn btn-outline-dark ml-1" v-if="show.cancelar" @@click="cancelaAlta">
+                        <i class="bi bi-x-square"></i>
+                        Cancelar
+                    </buttton>
+                </div>
+            </div>
+
+            <div class="row w-100 h-100 m-0 py-2 shadow rounded border border-dark border-1 bg-light" v-show="show.altaProducto">
+                <h5 class="w-100 px-2">Alta de Producto</h5>
+
+                <div class="col-12 col-md-9 col-lg-6" v-if="campos.input.titulo">        
+                    <label class="label-primary m-0">Seleccione el producto</label>
+                    <div class="multi-select">
+                         <!-- Filter Input -->
+                        <input
+                            type="search"
+                            v-model="filterText"
+                            placeholder="Escriba para filtrar los productos..."
+                            class="form-control"
+                        />
+                        <!-- Dropdown -->
+                        <div class="multi-select-dropdown" v-show="isOpen" :style="{ zIndex: zIndexValue, display: displayOptions }">
+                            <!-- Filtered Options -->
+                            <div
+                                v-for="option in filteredOptions"
+                                :key="option.id_producto"
+                                class="multi-select-item">
+                                <input
+                                    type="checkbox"
+                                    :id="'input_' + option.id_producto"
+                                    v-model="option.selected"
+                                    @@click="eligeOpcion(option, $event)"
+                                />
+                                <label :for="'input_' + option.id_producto">{{ option.descripcion }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <label class="label-primary m-0">Productos elegidos</label>
+                    <ul class="list-group">
+                        <li v-for="item in selectedOptions" class="list-group-item">
+                                <i class="btn btn-outline-danger bi bi-x-square btn-sm" title="Quitar de la lista" @@click="elimina(item)"></i>
+                            {{item.codigo}}&nbsp;-&nbsp;{{item.nombre}}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-12 d-flex align-items-end mt-4">
+                    <buttton class="btn btn-outline-primary" @@click="guardarProductos">
+                        <i class="bi bi-floppy"></i>
+                        Guardar
+                    </buttton>
+                    <buttton class="btn btn-outline-dark ml-1" @@click="cancelaAlta">
+                        <i class="bi bi-x-square"></i>
+                        Cancelar
+                    </buttton>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w-100 py-2"  v-if="array.archivos.length > 0 && !nuevo">
+            <table class="table table-bordered table-hover" :class="{'table-striped': !nuevo }">
+                <thead>
+                    <tr>
+                        <th class="text-dark">Acción</th>
+                        <th v-if="campos.input.titulo" class="text-dark">Titulo</th>
+                        <th v-if="campos.dropDown.tipoArchivo" class="text-dark">Tipo archivo</th>
+                        <th v-if="campos.input.descripcion" class="text-dark">Descripcion</th>
+                        <th v-if="campos.input.orden" class="text-dark">Orden</th>
+                        <th class="text-dark">Archivo</th>
+                        <th v-if="campos.input.fecha" class="text-dark">Fecha</th>
+                        <th v-if="campos.input.imagen" class="text-dark">Imagen</th>
+                        <th v-if="show.botonProducto" class="text-dark">Productos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in array.archivos">
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm btn-success" :title="'Detalle de ' + nombreMultimedia" @@click="getArchivo(item)">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger ml-1" :title="'Eliminar ' + nombreMultimedia" @@click="eliminaArchivo(item)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button class="btn btn-sm btn-info ml-1" title="Editar Productos" @@click="agregarProducto(item)" v-if="array.productos.length > 0">
+                                <i class="bi bi-p-square"></i>
+                            </button>
+                        </td>
+                        <td v-if="campos.input.titulo">{{item.titulo}}</td>
+                        <td v-if="campos.dropDown.tipoArchivo">{{item.tipo_archivo}}</td>
+                        <td v-if="campos.input.descripcion">{{item.descripcion}}</td>
+                        <td v-if="campos.input.orden">{{item.orden}}</td>
+                        <td>
+                            <a :href="item.ruta" class="card-link" target="_blank" rel="nofollow noreferrer" :title="item.archivo">{{item.archivo}}</a>
+                        </td>
+                        <td v-if="campos.input.fecha">{{getDate(item.fecha)}}</td>
+                        <td v-if="campos.input.imagen">
+                            <a :href="item.rutaImagen" class="card-link" target="_blank" rel="nofollow noreferrer" :title="item.imagen">{{item.imagen}}</a>
+                        </td>
+                        <td v-if="show.botonProducto" v-html="item.nombreProductos"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</template>
+
+
+<script src="~/js/componente/archivos.js" asp-append-version="true"></script>

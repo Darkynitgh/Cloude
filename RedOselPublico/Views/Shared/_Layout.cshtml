@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Red Osel - @ViewBag.Title</title>
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval'  https://cdn.jsdelivr.net/npm/flatpickr;
+        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/bootstrap@@5.3.3/dist/css/ https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/font/ https://fonts.googleapis.com/css2 https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/ https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/ https://cdn.jsdelivr.net/npm/flatpickr/dist/;
+        style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/bootstrap@@5.3.3/dist/css/ https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/font/ https://fonts.googleapis.com/css2 https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/ https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/ https://cdn.jsdelivr.net/npm/flatpickr/dist/;
+        img-src 'self' data: https://www.redosel.com/archivos2014/productos/;
+        font-src 'self' https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/font/ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/ https://fonts.gstatic.com/s/montserrat/ https://cdn.linearicons.com/free/1.0.0/ https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/ https://cdn.jsdelivr.net/npm/flatpickr;
+        script-src-elem 'self'  https://cdn.jsdelivr.net/npm/flatpickr https://cdnjs.cloudflare.com/ajax/libs/luxon/3.5.0/;
+        connect-src 'self';
+        frame-src * data: blob:;
+        object-src 'self' data: blob: http://localhost/RedOsel/;
+        media-src 'self' https://www.youtube.com https://youtu.be/;
+        worker-src 'self' http://localhost/*;
+    ">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />  
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-utilities.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/alertas.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/loader.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body id="mainBg" class="fullscreen-bg">
+    <div class="text-center cargando-c fondoCargando-2">
+        <div class="loader d-flex h-100 w-100 align-items-center justify-content-center">
+            <div class="container-c loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="appLayout" class="with-nav fixed-top">
+        <header class="header bg-dark py-2" tabindex="-1" id="offcanvasExample">
+            <div class="container d-flex justify-content-between align-items-center gap-5">
+                <!-- Logo -->
+                <a role="link" asp-action="Inicio" asp-controller="Inicio" class="logo">
+                    <img src="~/images/logo-inverse.webp" alt="Logo" class="img-fluid" style="max-height: 40px;">
+                </a>
+
+                <!-- Hamburger Menu for Mobile -->
+                <button class="btn d-lg-none text-light" id="menu-toggle" data-bs-toggle="offcanvas" href="#offcanvasRight">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Navigation -->
+                <nav class="navbar-container d-none d-lg-flex justify-content-center" v-cloak>
+                    <div class="d-flex align-items-center justify-content-between text-sm fw-bold gap-4">
+                        <ul v-cloak class="nav gap-xl-4 gap-1">
+                            <li v-for="(item, index) in array.menu" 
+                                class="text-white" 
+                                :class="item?.opciones && item?.opciones.length > 0 ? 'dropdown': ''"
+                                v-show="item.id !== 84"
+                                :key="index">
+
+                                <a v-if="item.opciones && item.opciones.length > 0 && item.url_destino === null"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   class="text-white fs-6-5 d-inline-flex text-decoration-none fw-bold text-center dropdown-toggle bg-transparent border-0 mt-2"
+                                   :title="item.descripcion"                                   
+                                   data-bs-auto-close="outside">
+                                    {{item.descripcion.toUpperCase()}}                                 
+                                </a>
+
+                                <div class="dropdown-menu" :id="'dropDrown' + index" v-if="item.opciones && item.opciones.length > 0">
+                                    <a role="link" v-for="j in item.opciones" :href="j.href" class="dropdown-item fs-6-5">{{j.descripcion}}</a>
+                                </div>
+
+
+                                <a v-else 
+                                    role="link"
+                                   :href="item.url_destino !== null ? item.url_destino : item.href"
+                                   :target="item.url_destino !== null ? '_blank' : '_self'"                                   
+                                    class="dropdown-item text-white fw-bold mt-2 fs-6-5">{{item.descripcion.toUpperCase()}}</a>
+                            </li>
+                        </ul>
+               
+                   
+                        <!--RECURSOS-->
+                        <div class="dropdown fs-7" v-if="array.recursos && array.recursos.length > 0">
+                            <button class="btn mt-0 dropdown-toggle fw-semibold text-dark text-xs border bg-white" type="button" id="dropdownMenuButton1" 
+                                    data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                                RECURSOS
+                                <i class="ms-2 bi bi-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu bg-white" aria-labelledby="dropdownMenuButton1">
+                                <li class="fs-7" v-for="item in array.recursos" v-cloak>
+
+                                    <div v-if="item.opciones && item.opciones.length > 0">
+                                        <div class="dropend">
+                                            <a role="button" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-expanded="false">{{item.descripcion}}</a>
+                                            <ul class="dropdown-menu bg-white" >
+                                                <li class="fs-7" v-for="(i, index) in item.opciones">
+                                                    <a role="link"
+                                                       v-if="item.url_destino === null"
+                                                       target="_self"
+                                                       :href="i.href"
+                                                       class="dropdown-item">
+                                                        {{i.descripcion}}
+                                                    </a>
+                                                    <a v-else
+                                                       role="link"
+                                                       target="_blank"
+                                                       :href="i.url_destino"
+                                                       class="dropdown-item">
+                                                       {{i.descripcion.toUpperCase()}}
+                                                   </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <a role="link"
+                                           style="cursor:pointer"
+                                           v-if="item.id === 85"
+                                           @@click="logonPresupuestoPublicidad"
+                                           class="dropdown-item">
+                                            {{item.descripcion}}
+                                        </a>
+                                        <a 
+                                           role="link"                                           
+                                           v-else-if="item.url_destino === null"
+                                           target="_self"
+                                           :href="item.href"
+                                           class="dropdown-item">
+                                            {{item.descripcion}}
+                                        </a>
+                                       <a 
+                                           v-else
+                                           role="link"
+                                           target="_blank"
+                                           :href="item.url_destino"
+                                           class="dropdown-item">
+                                            {{item.descripcion}}
+                                       </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <a v-for="item in array.menu.filter(i => i.id === 84)"
+                           v-cloak                      
+                           class="text-light text-decoration-none text-center"
+                           role="link"
+                           :href="item.url_destino"
+                           target="_blank"
+                           title="Yo Calculo">
+
+                           <img :src="item.src" :alt="item.descripcion" class="d-flex justify-content-end btn btn-header btn-header-1 shadown-light" />                            
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Logout Icon -->
+                <div class="d-none d-lg-block">
+                    <button type="button" class="btn btn-light d-flex justify-content-around py-0 ps-0 align-items-center" @@click="salir">
+                        <img class="icon me-1 " src="~/images/logout.png" alt="">
+                        <span class="fs-7-5">Cerrar sesión</span>
+                    </button>
+                    <small class="text-white d-flex fs-7-5">
+                        <a v-cloak class="bi bi-person-circle text-decoration-none text-white" role="complementary" aria-describedby="User">&nbsp;{{nombre_corto}}&nbsp;{{apellidos_corto}}</a>
+                    </small>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="offcanvas offcanvas-end w-75 bg-dark" data-bs-backdrop="static" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                    <h2 class="text-white m-0 fw-bold">
+                        <a asp-action="Inicio" asp-controller="Inicio" class="text-decoration-none text-white">RED OSEL</a>
+                        <small class="text-white d-flex fs-6">
+                            <a v-cloak class="bi bi-person-circle text-decoration-none text-white" role="complementary" aria-describedby="User">&nbsp;{{nombre}}&nbsp;{{apellidos}}</a>
+                        </small>
+                    </h2>
+                    <button type="button" class="btn-close bg-white " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body d-flex flex-column align-items-start gap-3 position-relative">
+                    <ul v-cloak class="nav gap-2 d-flex flex-column align-items-start">
+                        <li v-for="(item, index) in array.menu"
+                            class="text-white"
+                            :class="item?.opciones && item?.opciones.length > 0 ? 'dropdown': ''"
+                            v-show="item.url_destino === null"
+                            :key="index">
+
+                            <a v-if="item.opciones && item.opciones.length > 0 && item.url_destino === null"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false"
+                               v-show="item.url_destino === null"
+                               class="text-white d-inline-flex text-decoration-none fw-bold text-center dropdown-toggle bg-transparent border-0 m-0"
+                               :title="item.descripcion"
+                               data-bs-auto-close="outside">
+                                {{item.descripcion.toUpperCase()}}
+                            </a>
+                            <div class="dropdown-menu" :id="'dropDrown' + index" v-if="item.opciones && item.opciones.length > 0">
+                                <a role="link" v-for="j in item.opciones" :href="j.href" class="dropdown-item">{{j.descripcion}}</a>
+                            </div>
+
+
+                            <a v-else
+                               role="link"
+                               :href="item.url_destino !== null ? item.url_destino : item.href"
+                               :target="item.url_destino !== null ? '_blank' : '_self'"
+                               v-if="item.url_destino === null"
+                               class="dropdown-item text-white fw-bold mt-0">{{item.descripcion.toUpperCase()}}</a>
+                        </li>
+                    </ul>
+
+
+
+                    <!--RECURSOS-->
+                    <div class="dropdown fs-7" v-if="array.recursos && array.recursos.length > 0">
+                        <button class="btn mt-0 dropdown-toggle fw-semibold text-dark text-xs border bg-white" type="button" id="dropdownMenuButton1"
+                                data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                            RECURSOS
+                            <i class="ms-2 bi bi-chevron-down"></i>
+                        </button>
+                        <ul class="dropdown-menu bg-white" aria-labelledby="dropdownMenuButton1">
+                            <li class="fs-7" v-for="item in array.recursos" v-cloak>
+
+                                <div v-if="item.opciones && item.opciones.length > 0">
+                                    <div class="dropend">
+                                        <a role="button" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-expanded="false">{{item.descripcion}}</a>
+                                        <ul class="dropdown-menu bg-white">
+                                            <li class="fs-7" v-for="(i, index) in item.opciones">
+                                                <a role="link"
+                                                   v-if="item.url_destino === null"
+                                                   target="_self"
+                                                   :href="i.href"
+                                                   class="dropdown-item">
+                                                    {{i.descripcion}}
+                                                </a>
+                                                <a v-else
+                                                   role="link"
+                                                   target="_blank"
+                                                   :href="i.url_destino"
+                                                   class="dropdown-item">
+                                                    {{i.descripcion.toUpperCase()}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <a role="link"
+                                       v-if="item.url_destino === null"
+                                       target="_self"
+                                       :href="item.href"
+                                       class="dropdown-item">
+                                        {{item.descripcion}}
+                                    </a>
+                                    <a v-else
+                                       role="link"
+                                       target="_blank"
+                                       :href="item.url_destino"
+                                       class="dropdown-item">
+                                        {{item.descripcion}}
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <a v-for="item in array.menu"
+                       v-cloak
+                       v-show="item.url_destino !== null"
+                       class="text-light text-decoration-none text-center"
+                       role="link"
+                       :href="item.url_destino !== null ? item.url_destino : item.href"
+                       :target="item.url_destino !== null ? '_blank' : '_self'"
+                       :title="item.descripcion">
+
+                        <span v-if="item.img_descripcion === null">
+                            {{item.descripcion.toUpperCase()}}
+                        </span>
+
+                        <img v-else :src="item.src" :alt="item.descripcion" class="d-flex justify-content-end btn btn-header btn-header-1 shadown-light">
+
+                    </a>
+
+                    <button type="button" class="btn btn-light d-flex justify-content-around py-0 ps-0 align-items-start" @@click="salir">
+                        <img class="icon me-1" src="~/images/logout.png" alt="">
+                        <span class="text-sm">Cerrar sesión</span>
+                    </button>
+
+                    <br />
+
+                    <span class="text-white">Derechos reservados &copy; @DateTime.Now.Year</span>
+                    <a href="" class="text-white text-decoration-none fs-6">Aviso de privacidad</a>
+                
+                </div>
+            </div>
+
+
+        </header>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.5.0/luxon.min.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/lib/vue/vue.global.prod.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="Alertas" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <div class="vw-100" style="height:3.5rem;"></div>
+    <main role="main" >
+        @RenderBody()
+    </main>
+    <div class="vw-100" style="height:2.5rem;"></div>
+
+
+    <footer class="footer fixed-bottom bg-dark fs-7" style="z-index:1029">
+        <div class="d-flex w-100 h-auto">
+            <div class="col-12 col-lg-7 py-0 my-0">
+                <div class="d-flex justify-content-lg-end justify-content-center align-items-center h-100 w-100 gap-3">
+                    <div>
+                        <i class="fa-solid fa-phone me-2"></i>
+                        <a href="tel:8181313333" target="_blank" class=" text-decoration-none text-white">+52 1 81 8131 3333</a>
+                    </div>
+                    <a href="https://www.facebook.com/pinturasoselmexico" target="_blank" >
+                        <span class="bi bi-facebook fs-7"></span>
+                    </a>
+                    <a href="https://www.instagram.com/pinturasoselmxoficial/" target="_blank">
+                        <span class="bi bi-instagram fs-7"></span>
+                    </a>
+                    <a href="https://www.youtube.com/user/OselPinturas" target="_blank">
+                        <span class="bi bi-youtube fs-7"></span>
+                    </a>
+
+                    <div>
+                        <i class="fa-brands fa-whatsapp me-2"></i>
+                        <a href="https://wa.me/+5218126204545" target="_blank" class="text-decoration-none text-white">+52 1 81 2620 4545</a>
+                    </div>
+                </div>
+            </div>            
+            <div class="col-12 col-lg-5 py-0 text-center text-lg-end my-0">
+                <div class="fs-7 m-0 ">
+                    <span>Derechos reservados &copy; @DateTime.Now.Year</span>
+                </div>
+                <a href="" class="text-white text-decoration-none fs-7">Aviso de privacidad</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

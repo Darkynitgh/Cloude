@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Equipos";
+}
+
+
+<section id="appEquipos"> 
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">Equipos</span>
+            <div class="border-box"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 text-center">
+            <p class="m-0 fs-7">
+            </p>
+        </div>
+    </div>
+
+    <img class="img-fluid d-block mx-auto mt-5" :src="srcMarca" style="height:125px;" />
+    <div class="container my-2 d-flex justify-content-center " v-if="array.equipos.length > 0" v-cloak>
+        
+        <div class="d-flex flex-column flex-md-row bg-white bg-opacity-50    justify-content-center my-2 p-3 rounded-3">              
+            <ul class="mx-2 px-0 w-equipos">
+                <li v-for="item in array.equipos" class="list-unstyled py-2 mx-3" :class="{'text-decoration-underline fw-bold': item.over}" @@mouseover="verImagen(item)">
+                    <a :href="item.href" target="_blank" role="link" class="text-decoration-none text-dark break-word">
+                        <span class="bi btn btn-sm btn-light bi-download border shadow-osel"></span>
+                        &nbsp;
+                        {{item.descripcion}}
+                    </a>
+                </li>
+            </ul>
+            <div class="p-md-2 p-1"></div>
+            <div v-cloak class="rounded-2 p-2 d-flex justify-content-md-center justify-content-center align-items-center align-items-md-start" style="width:240px">
+                <img class="img-fluid p-1 bg-white" :src="src" style="height:225px;min-height:225px;max-width:240px;" />
+            </div>
+
+            <!--<div class=" col-12 col-md-6 col-lg-4 py-2 px-3" v-for="(item, index) in array.equipos">
+                <div class="card shadow-osel rounded-1 p-1">
+                    <div class="d-flex justify-content-center w-100 py-2">
+                        <img :src="item.logo" style="max-width:120px;" />
+                    </div>
+
+                    <div class="w-100 h-100 my-2">
+                        <div :id="'carouselExampleDark' + item.id_equipo_marca" v-if="item.items && item.items.length > 0" class="carousel slide" data-bs-theme="dark">
+                            <div class="carousel-inner" style="background-color:#f8f9fa">
+                                <div class="carousel-item" :class="{ 'active': index === 0}" v-for="(i, index) in item.items" :key="index">
+                                    <div class="d-flex gap-3 justify-content-center align-items-center w-100">
+                                        <div role="button" class="col-5 shadow-osel-sm border-1 p-1 bg-white" v-for="(e, index) in i" :key="index" @@click="abrir(e, item)">
+                                            <div class="m-0 text-center fs-7 fw-bold text-truncate mb-1">
+                                                {{e.descripcion}}
+                                            </div>
+                                            <div class="w-100 d-flex justify-content-center">
+                                                <img :src="e.ruta" class="d-block" :title="'Descargar ' + e.descripcion" :alt="e.imagen" style="max-height:80px;width:auto;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <button v-if="item.items.length > 1" class="carousel-control-prev" type="button" :data-bs-target="'#carouselExampleDark' + item.id_equipo_marca" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon fw-bold" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button v-if="item.items.length > 1" class="carousel-control-next" type="button" :data-bs-target="'#carouselExampleDark' + item.id_equipo_marca" data-bs-slide="next">
+                                <span class="carousel-control-next-icon fw-bold" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="col-12" v-if="array.equipos.length === 0">
+                <h3 class="fw-bold text-center">Sin equipos disponibles</h3>
+            </div>
+
+
+
+            <div class="modal fade" ref="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark">
+                            <span class="modal-title fs-5 text-white">
+                                <img :src="srcLogo" style="height:40px; z-index:0;" />
+                                {{marca}}                                    
+                            </span>
+                            <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pb-5">
+                            <span class="w-100 d-flex justify-content-center"> {{descripcionImagen}}</span>
+
+
+                            <div class="w-100 d-flex align-items-center justify-content-center">
+
+                              
+                                <div class="image-zoom-container">
+                                    <div id="zoom-result"
+                                         ref="result"
+                                         :style="zoomResultStyle"
+                                         v-show="zoomVisible"></div>
+
+                                    <img :src="imageSrc"
+                                         class=""
+                                         :title="descripcionImagen"
+                                         :alt="descripcionImagen" style="height:250px;width:100%"
+                                         @@mousemove="moveLens"
+                                         @@mouseenter="showZoom"
+                                         @@mouseleave="hideZoom"
+                                         ref="image">
+
+                                    <div id="zoom-lens"
+                                         ref="lens"
+                                         v-show="zoomVisible"
+                                         :style="{ left: lensPosition.x + 'px', top: lensPosition.y + 'px' }"></div>
+
+                               
+                                </div>
+
+                              
+                            </div>
+                         
+                            <div class="w-100 d-flex justify-content-center mt-3">
+                                <span @@click="descargar" role="button" download class="rounded btn-custom-2 px-1 py-1 mb-1 mx-auto">&nbsp;Descargar documento</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+    <div class="text-center w-100">
+        <button class="btn btn-primary" @@click="regresar" title="Regresar">
+            Regresar
+        </button>
+    </div>
+</section>
+
+<script src="~/js/views/equipos.js" asp-append-version="true"></script>

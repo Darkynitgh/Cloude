@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "Claves de Sistema";
+}
+
+<main id="appClaves">
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-md-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel w-100 h-100 d-flex align-items-center justify-content-center icon icon-gradient bi bi-exclamation-circle"></i>
+                </div>
+            </div>
+            <div class="col-9 col-md-11 p-2">
+                <h5>Claves</h5>
+                <span>Administración de claves de sistema</span>
+            </div>
+        </div>
+
+        <!-- Inicio acordeón -->
+        <div id="acordeonProductos" class="col-12 mt-3">
+            <div class="card">
+                <div class="card-header bg-blue-dark"
+                     style="cursor: pointer"
+                     @@click="abreAcordion"
+                     data-toggle="collapse"
+                     data-target="#collapseOne"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    <div class="row">
+                        <div class="col-11">
+                            <h5 class="m-0 text-white">Filtros</h5>
+                        </div>
+                        <div class="col-1">
+                            <span :class="icono" class="text-white"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapseOne"
+                     class="collapse"
+                     aria-labelledby="headingOne"
+                     data-parent="#acordeonProductos"
+                     aria-describedby="accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Descripción</div>
+                                    </div>
+                                    <select class="form-control" v-model="ddl.tipoClave">
+                                        <option value="0" >
+                                            Todos
+                                        </option>
+                                        <option v-for="item in array.tipoClaves" :value="item.id_tipo_clave">{{item.tipo_clave}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="btn btn-secondary" @@click="ddl.tipoClave = '0'">
+                                    <span class="lnr lnr-undo">&nbsp;</span>
+                                    Limpiar filtros
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-prepend-primary" @@click="getClaves">
+                                    <span class="lnr lnr-magnifier">&nbsp;</span>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Acordeón -->
+
+        <div class="col-12 mt-3">
+            <button class="btn btn-prepend-primary mb-2" @@click="agregarClave">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar clave
+            </button>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="header-table">
+                        <tr>
+                            <th>Acción</th>
+                            <th>    
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Tipo Clave
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <span class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.claves.length === 0" :class="sorted.descripcion.iconoAsc" role="button" @@click="eligeFiltro(2)"></span>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <span class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.claves.length === 0" :class="sorted.descripcion.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Descripción
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <span class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.claves.length === 0" :class="sorted.tipo.iconoAsc" role="button" @@click="eligeFiltro(6)"></span>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <span class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.claves.length === 0" :class="sorted.tipo.iconoDesc" role="button" @@click="eligeFiltro(6, false)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-cloak v-for="item in array.claves" :key="item.id_usuario">
+                            <td class="text-nowrap">
+                                <button class="btn" title="Editar Aviso" @@click="getClave(item)">
+                                    <span class="lnr lnr-pencil"></span>
+                                </button>
+                            </td>
+                            <td>{{item.tipo_clave}}</td>
+                            <td>{{item.Cadena}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal Claves -->
+        <div class="modal fade" ref="modalClaves" data-backdrop="static" data-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{tituloModal}}</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <label class="m-0">Tipo clave</label>
+                                <select class="select-custom-po p-1" v-model="ddl.tipoClave2">
+                                    <option value="0">Seleccione</option>
+                                    <option v-for="item in array.tipoClaves" :value="item.id_tipo_clave">{{item.tipo_clave}}</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <label class="m-0">Descripción</label>
+                                <input class="cg-input-adicional p-1" type="text" v-model="value.descripcion" />
+                            </div>
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <label class="m-0">Valor 1</label>
+                                <input class="cg-input-adicional p-1" v-model="value.valor1" type="number" />
+                            </div>
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <label class="m-0">Clave corta 1</label>
+                                <input class="cg-input-adicional p-1" type="text" v-model="value.claveCorta1" />
+                            </div>
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <label class="m-0">Clave corta 2</label>
+                                <input class="cg-input-adicional p-1" type="text" v-model="value.claveCorta2" />
+                            </div>
+                            <div class="col-12 col-md-4 col-xl-3">
+                                <div class="custom-control custom-switch d-flex h-100 align-items-end">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="check.estatus" />
+                                    <label class="custom-control-label" for="customSwitch1">Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardar">
+                            <span class="bi bi-check-circle"></span>
+                            Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary ml-1" data-dismiss="modal">
+                            <span class="bi bi-x-circle"></span>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</main>
+
+<script src="~/js/views/claves-sistema.js" asp-append-version="true"></script>

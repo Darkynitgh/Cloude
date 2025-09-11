@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Cotizador Industrial";
+}
+
+<section class="container my-2" id="appCotizadorIndustrial">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">
+                Cotizador Industrial
+            </span>
+            <div class="border-box"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 text-center">
+        </div>
+    </div>
+
+
+    <div class="w-100 d-lg-flex d-block justify-content-center gap-3">
+        <div class="fw-semibold">
+            <label class="fw-semibold">Familia</label>
+            <select class="form-select" style="min-width:380px;" @@change="getColores($event)" v-model="ddl.familia">
+                <option value="0">Seleccione</option>
+                <option v-for="item in array.familias" :value="item.linea">{{item.familia}}</option>
+            </select>
+        </div>
+        <div class="fw-semibold">
+            <label class="fw-semibold">Color</label>
+            <select class="form-select" style="min-width:380px;" :disabled="array.colores.length === 0" v-model="ddl.color" @@change="getDetalleCotizador">
+                <option value="0">Seleccione</option>
+                <option v-for="item in array.colores" :value="item.codigo">{{item.descripcion}}</option>
+            </select>
+        </div>
+        <div class="fw-semibold" v-if="!show.baseAgua">
+            <div class="form-check form-switch d-flex w-100 h-100 justify-content-start align-items-center">
+                <input class="form-check-input" type="checkbox" role="switch" v-model="check.solvente" :disabled="Number(this.ddl.familia) === 0" id="flexSwitchCheckDefault" @@click="getDetalleCotizador" />
+                <label class="form-check-label" for="flexSwitchCheckDefault">&nbsp;Solvente</label>
+            </div>
+        </div>
+    </div>
+
+    <label class="fs-7 w-100 p-2 text-center bg-dark fw-bolder text-white mb-1 mt-3" v-if="familia !== ''">
+        <span  class="opacity-100 fs-6">{{familia}}</span>
+    </label>
+
+    <!-- KIT 3 GALONES -->
+    <div class="table-responsive w-100 my-3">
+        <h4 class="text-center fw-bolder bg-opacity-50 bg-white my-2" v-if="array.cotizador.length === 0">Elija una familia y color</h4>
+        <table class="table table-bordered fs-7-5" v-for="(item, index) in array.cotizador" v-cloak>
+            <colgroup>
+                <col style="width:15%" />
+                <col style="width:15%" />
+                <col style="width:40%" />
+                <col style="width:15%" />
+                <col style="width:15%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="bg-body-secondary bg-gradient">Elemento</th>
+                    <th class="bg-body-secondary bg-gradient">Código</th>
+                    <th class="bg-body-secondary bg-gradient">Descripción</th>
+                    <th class="bg-body-secondary bg-gradient text-end">Precio Dist. Unitario</th>
+                    <th class="bg-body-secondary bg-gradient text-end">Precio Púb. Unitario</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr>
+                    <td colspan="5" class="fw-bold bg-body-tertiary text-center bg-gradient fs-7 border-0">{{item.nombre}}</td>
+                </tr>
+                <tr v-if="!show.baseAgua">
+                    <td colspan="5" style="background-color:#f7f7f7;" class="fw-bold text-center bg-gradient fs-7 border-0">FORMÚLA:&nbsp;{{item.formula}}</td>
+                </tr>
+                <tr v-for="i in item.detalle" v-show="!i.esSolvente || i.esSolvente && check.solvente">
+                    <td>{{i.descripcion}}</td>
+                    <td>{{i.codigo}}</td>
+                    <td>{{i.descripcionGeneral}}</td>
+                    <td class="text-end">{{i.precioDistribuidor}}</td>
+                    <td class="text-end">{{i.precioPublico}}</td>
+                </tr>
+                <tr class="">
+                    <td valign="middle" style="background-color: #ecc171 !important" colspan="3" class="fw-bold text-end fs-7">TOTAL&nbsp;{{item.nombre}}</td>
+                    <td valign="middle" style="background-color: #ecc171 !important" class="fw-bold text-end">{{item.precioDistribuidorTotal}}</td>
+                    <td valign="middle" style="background-color: #ecc171 !important" class="fw-bold text-end">{{item.precioPublicoTotal}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<script src="~/js/views/cotizador-industrial.js" asp-append-version="true"></script>

@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Captura de Ventas de Mayoristas a Distribuidores Indirectos";
+}
+
+<section id="appVentasMayoristas" v-cloak>
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color:#ffffff !important">
+                Captura de Ventas de Mayoristas a Distribuidores Indirectos
+            </span>
+            <div class="border-box" style="border-color:#ffffff !important"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 text-center">
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="my-2 text-center">
+                <b>CLIENTE:&nbsp;</b>
+                <span class="fw-normal">{{cliente}}</span>
+            </div>
+
+            <div class="w-100 d-flex justify-content-center align-items-center h-100">
+                <div class="card shadow-osel-sm w-fit">
+                    <div class="card-body py-1 px-2 d-flex gap-1 align-items-end h-100 ">
+                        <div>
+                            <label v-if="show.capturar" class="form-label fw-bold fs-7-5 m-0">Clave de Distribuidor Indirecto:</label>
+                            <select v-if="show.capturar" class="form-select fs-7-5" style="max-width:350px;" :disabled="array.distribuidores.length === 0" v-model="ddl.distribuidor" @@change="cambiaDistribuidor">
+                                <option value="0">Seleccione</option>
+                                <option v-for="item in array.distribuidores" :value="item.cliente">{{item.cliente}}&nbsp;-&nbsp;{{item.nombre}}</option>
+                            </select>
+                            <label v-else class="fs-7-5" v-html="distribuidorActual"></label>
+                        </div>
+
+                        <button class="btn btn-primary fs-7-5 w-fit" :disabled="array.anioMes.length === 0" v-if="show.capturar" @@click="getCapturasDistribuidor">
+                            <span class="bi bi-pencil"></span>
+                            Editar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-12 mb-0" v-if="distribuidorActual.trim() !== ''">
+                <div class="w-100 h-100 table-responsive d-flex justify-content-center" v-if="array.anioMes.length > 0">
+                    <table class="table w-auto table-bordered table-hover fs-7 m-0">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th class="py-0 px-2">Año / Mes</th>
+                                <th class="py-0 px-2">Venta ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in array.anioMes" class="p-0">
+                                <td class="py-1 px-2" valign="middle" align="center">
+                                    {{item.anioMes}}
+                                </td>
+                                <td class="py-1 px-2">
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control py-0 fs-7"
+                                           :disabled="item.disabled"
+                                           v-model="item.importe"
+                                           @@focusout="formatNumber(item)"
+                                           @@focusin="unFormat(item)"                                           
+                                           inputmode="numeric"
+                                           />
+                                        <button :disabled="item.disabled" v-if="show.cancelar" class="btn btn-sm btn-outline-warning fs-7-5" title="Borrar" @@click="borrar(item)">
+                                               <span class="bi bi-eraser"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="text-end">
+                                <td colspan="2">
+                                    <label class="fs-7"><b>Total:</b>&nbsp;{{totalCapturado}}</label>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td colspan="2" class="">
+                                    <button class="btn btn-success fs-7-5 " v-if="show.guardar" @@click="capturasDistribuidorInserta">
+                                        <span class="bi bi-save"></span>
+                                        Guardar
+                                    </button>
+                                    &nbsp;
+                                    <button class="btn btn-secondary fs-7-5" @@click="cancelarSeleccion" v-if="show.cancelar">
+                                        <span class="bi bi-x-square"></span>
+                                        Cancelar
+                                    </button>
+                                    &nbsp;
+                                    <button class="btn btn-info fs-7-5 text-white" @@click="reinicia" v-if="show.cancelar">
+                                        <span class="bi bi-eraser"></span>
+                                        Borrar todo
+                                    </button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="table-responsive mt-2">
+                <table class="table table-bordered fs-7 m-0 table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="py-0 px-2">Id</th>
+                            <th class="py-0 px-2">Cve. Mayorista</th>
+                            <th class="py-0 px-2">Cve. Distribuidor</th>
+                            <th class="py-0 px-2">Nombre</th>
+                            <th class="py-0 px-2 text-end">Año</th>
+                            <th class="py-0 px-2 text-end">Mes</th>
+                            <th class="py-0 px-2 text-end">Venta</th>
+                            <th class="py-0 px-2">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="p-0" v-for="(item, index) in array.ventas">
+                            <td valign="middle" class="py-0 px-2">{{item.id}}</td>
+                            <td valign="middle" class="py-0 px-2">{{item.cveMayorista}}</td>
+                            <td valign="middle" class="py-0 px-2">{{item.cveDistribuidor}}</td>
+                            <td valign="middle" class="py-0 px-2">{{item.nombre.replace('-', '')}}</td>
+                            @* <td valign="middle" class="py-0 px-2">{{ getNombreDistribuidor() }}</td> *@
+                            <td valign="middle" class="py-0 px-2 text-end">{{item.anio}}</td>
+                            <td valign="middle" class="py-0 px-2 text-end">{{item.mes}}</td>
+                            <td valign="middle" class="py-0 px-2 text-end">{{formatNumber(item.venta)}}</td>
+                            <td valign="middle" class="py-1 px-2"><a role="link" @@click="eliminaVenta(item)" class="btn btn-danger btn-sm fs-7-5 bi bi-trash">&nbsp;Eliminar</a></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" class="text-end" valign="middle">
+                                <b>Total</b>
+                            </td>
+                            <td class="text-end" valign="middle">
+                                {{totalVentas}}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="w-100 d-flex justify-content-center">
+                <div class="btn-group dropup">
+                    <button class="btn btn-dark my-2 fs-7-5 bi bi-printer dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        &nbsp;
+                        Imprimir
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button class="dropdown-item" @@click="getReporte(1)">
+                                <span class="bi bi-file-pdf"></span>
+                                PDF
+                            </button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item" @@click="getReporte(2)">
+                                <span class="bi bi-file-excel"></span>
+                                Excel
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+               
+            </div>
+
+            <footer class="border my-2 rounded-2 shadow-osel-sm bg-light">
+                <h6 class="fw-bolder mt-1">Notas importantes</h6>
+                <ul class="fs-7-5">
+                    <li><strong>La fecha límite para la captura de las ventas a distribuidores es el tercer día hábil posterior al cierre calendario semestral.</strong></li>
+                    <li><strong>Posterior a la captura y cierre definitivo del semestre si hubiera algún ajuste o corrección deberán comunicarse con nuestra asistente de dirección comercial (Verónica Escobedo) para gestionar algún cambio.</strong></li>
+                    <li><strong>La información que se tomará en cuenta para efectos de presupuestos de publicidad y nuevo descuento semestral será en función de la última más reciente información recibida en el portal.</strong></li>
+                    <li><strong>Agradeceremos se sirvan capturar mensualmente las ventas a distribuidores con el fin de conocer nosotros el status de crecimiento de cada uno de ellos, esto nos permitirá tomar acciones oportunamente en busca de mejores resultados al cierre semestral.</strong></li>
+                    <li><strong>Para cualquier duda sobre la operación y contenido de este programa favor de comunicarse con nuestra asistente de ventas antes mencionada.</strong></li>
+                </ul>
+            </footer>
+        </div>
+ 
+    </div>
+
+</section>
+
+
+<script src="~/js/views/ventas-mayoristas.js" asp-append-version="true"></script>

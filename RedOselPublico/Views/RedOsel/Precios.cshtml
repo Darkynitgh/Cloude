@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Precios";
+}
+
+<section id="appPrecios">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color:#ffffff !important">Precios</span>
+            <div class="border-box" style="border-color:#ffffff !important"></div>
+        </div>
+        <p class="text-normal m-0 fs-7 text-center">
+        </p>
+    </div>
+
+    <div class="container mb-3 mt-5 py-2 ">
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-5">
+@*             <a role="button" target="_self" href="~/RedOsel/ListaPrecios" class="d-flex align-items-center flex-column text-decoration-none mx-3">
+                <img src="~/imagenes/manuales/lista-precios.jpg" class="icon-circle-osel rounded-img img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span style="color:#ffffff !important;border-color:#ffffff !important" class="fw-bold  px-0 text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel text-center">Lista de Precios</span>
+            </a>
+            <a role="button" target="_self" href="~/RedOsel/CotizadorIndustrial" class="d-flex flex-column align-items-center text-decoration-none mx-3">
+                <img src="~/imagenes/manuales/cotizador-industrial.jpg" class="icon-circle-osel rounded-img img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span style="color:#ffffff !important;border-color:#ffffff !important" class="fw-bold  px-0 text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel text-center">Cotizador<br /> Industrial</span>
+            </a>
+            <a role="button" target="_blank" href="~/documentos/lista-promocionales-folletos.pdf" class="d-flex flex-column align-items-center text-decoration-none mx-3">
+                <img src="~/imagenes/manuales/folleto-promociones.jpg" class="icon-circle-osel  px-0 rounded-img img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span style="color:#ffffff !important;border-color:#ffffff !important" class="fw-bold text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel text-center">Folleto y<br/> Promociones</span>
+            </a> *@
+            <template v-for="item in menu" v-cloak>
+                <a role="button" 
+                   :target="target(item)"
+                   :href="urlContent(item)"
+                   class="d-flex align-items-center flex-column text-decoration-none mx-3">
+                    <img :src="urlImage(item)"
+                        class="icon-circle-osel rounded-img img-fluid rounded-circle mb-3"
+                         :alt="item.img_descripcion" />
+                    <span style="color:#ffffff !important;border-color:#ffffff !important" 
+                            class="fw-bold  px-0 text-icon m-0 px-2 py-1 fs-6 h3 border-osel color-text-osel text-center"
+                          v-html="formatHtml(item)">
+                    </span>
+                </a>
+            </template>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/eq.js" asp-append-version="true"></script>

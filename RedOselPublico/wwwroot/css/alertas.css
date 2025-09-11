@@ -1,0 +1,230 @@
+
+/*
+    ESTILO DE ALERTAS
+
+*/
+
+
+
+.alerts {
+    -ms-flex-preferred-size: 25rem;
+    flex-basis: 25rem;
+    max-width: 25rem;
+    font-size: .875rem;
+    background-color: rgba(255, 255, 255, .85);
+    background-clip: padding-box;
+    /* border: 1px solid rgba(0, 0, 0, .1); */
+    /* box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 10%); */
+    opacity: 0;
+    /*border-radius: .25rem;*/
+}
+
+.alerts-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .25rem .75rem;
+    color: #6c757d;
+    background-color: rgba(255, 255, 255, .85);
+    background-clip: padding-box;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+}
+
+.alerts.show {
+    display: block;
+    opacity: 1;
+}
+
+.alerts-body {
+    padding: 1% !important;
+}
+
+.divAlerta {
+    color: #444444;
+    background-color: #fcfeff;
+    text-align: center;
+    font-size: 14px;
+    left: 40%;
+    max-width: 25rem;
+    flex-basis: 25rem;
+    /* border: 1px solid #adcafd; */
+    /*border-radius: 10px;*/
+}
+
+#divMensaje p {
+    margin-bottom: 0px;
+}
+
+.divAlerta .alerts-header {
+    background-color: transparent;
+    color: #fff;
+    border: 0px;
+}
+
+.divAlerta .toast-header button.close {
+    color: #bdbdbd;
+}
+
+.icon {
+    display: inline-block;
+    font-size: inherit;
+    text-rendering: auto;
+    height: 40px;
+    width: 40px;
+}
+
+.icon-roja:before {
+    content: url(../images/icons/icon-danger.svg);
+    color: #ff3547;
+}
+
+.icon-verde:before {
+    content: url(../images/icons/icon-success.svg);
+    color: #00E097;
+}
+
+.icon-azul:before {
+    content: url(../images/icons/icon-info.svg);
+    color: #33b5e5;
+}
+
+.icon-amarilla:before {
+    content: url(../images/icons/icon-warning.svg);
+    color: #ffbb33;
+}
+
+.alerts-footer {
+    padding: 1%;
+}
+
+.divAlerta .alerts-body {
+    padding-bottom: 4%;
+}
+
+.alerts-title p {
+    color: #3f51b5;
+    font-weight: normal;
+    text-transform: none;
+    position: relative;
+    display: block;
+    padding: 1%;
+    font-size: 15px;
+    line-height: normal;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+/*.btn-outline-secondary {
+    width: 90px;
+    color: #7C7C7C;
+    font-weight: 700;
+    border: 2px solid #7C7C7C;
+    background-color: #fff;
+}*/
+
+.btn-alerta-aceptar {
+    width: 90px;
+    color: #3f51b5;
+    font-weight: normal;
+    font-size: 14px;
+    border: 1px solid #3f51b5;
+    background-color: #fff;
+}
+
+    .btn-alerta-aceptar:hover,
+    .btn-alerta-aceptar:focus {
+        color: #3f51b5;
+        border: 2px solid #3f51b5;
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem #3f51b580;
+    }
+
+    .btn-alerta-aceptar:hover {
+        color: #fff;
+        background-color: #3f51b5;
+        border-color: #3f51b5;
+    }
+
+.btn-alerta-cerrar {
+    width: 90px;
+    color: #198754;
+    font-weight: normal;
+    font-size: 14px;
+    border: 1px solid #198754;
+    background-color: #fff;
+}
+
+    .btn-alerta-cerrar:hover,
+    .btn-alerta-cerrar:focus {
+        color: #198754;
+        border: 2px solid #198754;
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem #19875480;
+    }
+
+    .btn-alerta-cerrar:hover {
+        color: #fff;
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+.btn-alerta-ok {
+    width: 80px;
+    color: #33b4e4;
+    font-weight: 700;
+    border: 2px solid #33b4e4;
+    background-color: #fff;
+}
+
+    .btn-alerta-ok:hover,
+    .btn-alerta-ok:focus {
+        color: #33b4e4;
+        border: 2px solid #33b4e4;
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem #33b4e480;
+    }
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #3f51b5;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.modal-radious {
+    border-radius: 25px !important;
+    box-shadow: 0px 0px 5px 1px;
+    /*max-width:25rem;*/
+}
+
+.w-size {
+    max-width: 25rem;
+}
+
+
+.modal-alert-size {
+    max-height: 350px;
+    max-width: 25rem;
+}
+
+.modal-alert-size .modal-footer .btn-outline-secondary {
+    font-size: 14px;
+}
+
+.modal-radious .modal-footer {
+    border-top: none;
+}
+
+#subPError {
+    text-align: start;
+}
+
+#subPError li {
+    padding: 0 1.5rem;        
+}

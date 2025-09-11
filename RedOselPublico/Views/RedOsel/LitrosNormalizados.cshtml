@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Litros Normalizados";
+}
+
+<section id="appLitrosNormalizados">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color:#ffffff !important">
+                Litros Normalizados
+            </span>
+            <div class="border-box" style="border-color:#ffffff !important"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 text-center">
+        </div>
+    </div>
+
+
+    <div class="container-sm my-2 mt-3">
+        <div class="w-100  d-md-flex d-grid justify-content-center align-items-center gap-3 row-gap-3">
+            <button class="btn btn-primary">
+                <span class="bi bi-file-earmark-excel" @@click="getReporte(true, 2)">&nbsp;Descargar en Excel</span>
+            </button>
+            <button class="btn btn-info text-white" @@click="getReporte(true)">
+                <span class="bi bi-file-pdf">&nbsp;Descargar en PDF</span>
+            </button>
+            <!--<button class="btn btn-success text-white" @@click="getReporte(true, 1, true)">
+                <span class="bi bi-file-pdf">&nbsp;Preview en PDF</span>
+            </button>-->
+        </div>
+
+        <div v-if="show.cargando">
+            <div class="d-flex justify-content-center h-100 align-items-center w-100 my-5">
+                <span class="fs-6 fw-semibold fst-italic">Cargando reporte&nbsp;&nbsp&nbsp;</span>
+                <div class="spinner-border" role="status">
+                </div>
+            </div>
+        </div>
+        <object v-else ref="pdfPreview" class="w-100 px-5 mx-5 py-2" height="600" type="application/pdf">
+            <a role="link" target="_blank" ref="link">Sino puede ver el PDF de clic aquí para descargarlo</a>
+        </object>
+  
+    </div>
+
+</section>
+
+
+<script src="~/js/views/litros-normalizados.js" asp-append-version="true"></script>

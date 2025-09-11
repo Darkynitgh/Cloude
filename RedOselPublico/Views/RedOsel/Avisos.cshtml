@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Avisos";
+}
+
+<section id="appAvisos" class="h-100">
+    <div class="text-center pt-4 container px-xl-5 px-md-2">
+        <div class="title-container">
+            <span class="border-text fw-bolder" v-cloak>BIENVENIDO&nbsp;{{nombre}}&nbsp;{{apellidos}}</span>
+            <div class="border-box"></div>
+        </div>
+        <p class="m-0 fs-6 text-justify text-dark fw-bold px-xl-5 px-md-2">
+            <span class="text-white">
+                En esta sección encontrarás información y herramientas útiles para la operación de tu negocio como son: productos, precios, manuales, homologaciones, folletos de color, información comercial, entre otros, con los cuales podrás brindar el mejor de los servicios a tus clientes.
+            </span>
+        </p>
+    </div>
+
+
+    <div class="container py-2 mt-0 mt-5 mb-2 px-md-5">
+        <div class="row h-100 px-lg-5">
+
+            <div v-cloak v-for="(item, index) in array.avisos" class="col-6 col-md-6 col-lg-4 col-xl-4 px-md-3 " :key="index">
+                <div class="flex-column bg-white shadow-osel border rounded-4 px-3 py-md-3 py-xl-4 py-1 flex-xl-row align-items-center justify-content-sm-between d-flex gap-3">
+
+                    <img class="icon-card" :src="'../images/' + item.icono" alt="">
+
+                    <div class="d-flex w-100 h-100 flex-column flex-md-column flex-xl-row text-center justify-content-between align-items-lg-center gap-3">
+                        <div class="d-flex w-100 flex-column align-items-md-center align-items-lg-start text-center">
+                            <p class="m-0 text-lg fw-bold fs-6-5 text-md-center text-lg-start">
+                                {{item.descripcion}}
+                                <br />
+                                <span class="fs-7 fw-bold text-blue">{{item.fecha}}</span>
+                            </p>
+                        </div>
+                        <div v-if="item.multimedia && item.multimedia.length > 0 " :id="'item_' + index">
+                            <div class="dropdown">
+                                <button v-if="item.multimedia && item.multimedia.length > 0" class="me-2 fs-7 btn btn-custom-2 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Ver más
+                                </button>
+                                <ul v-if="item.multimedia && item.multimedia.length > 0" class="dropdown-menu bg-body-secondary" :data-bs-parent="'#item_' + index">
+                                    <li v-for="file in item.multimedia" class="fs-7">
+                                        <button class="dropdown-item fw-semibold fs-7 text-truncate" role="button" :title="file.titulo ?? file.archivo">
+                                            <span role="button" class="fw-bold fs-7 fw bi bi-eye px-1 py-0 rounded btn btn-sm text-blue" title="Ver" @@click="verArchivo($event, file)"></span>
+                                            &nbsp;
+                                            <span role="button" class="fw-bold fs-7 bi bi-download rounded px-1 py-0 btn btn-sm text-warning-2" title="Descargar" @@click="descargar(file)"></span>
+                                            &nbsp;
+                                            {{file.titulo ?? file.archivo}}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div v-else-if="item.link">
+                            <a target="_blank" role="link" class="me-2 btn btn-custom-2 mt-2 dropdown-toggle" title="Clic para abrir" :href="item.urlMedia">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" ref="modalPrincipal"  tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-white">{{descripcionAviso}}</h5>
+                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-1">
+                    <div class="ratio ratio-16x9" v-if="show.video">
+                        <iframe :src="srcVideo"
+                                title="YouTube video"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div v-else id="pdfViewer">
+                        
+                        <object :data="srcVideo"
+                                width="100%"
+                                type="application/pdf"
+                                height="480"
+                                title="PDF">
+                            <p>
+                                No es posible ver PDF en móviles, de clic en link debajo.
+                                <a :href="srcVideo" target="_blank">Descargar el PDF, click aquí.</a>
+                            </p>
+                         </object>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/avisos.js" asp-append-version="true"></script>

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Historia";
+}
+
+<section id="appHistoria">
+    
+    <div class="container-sm my-2 pt-5">
+        <div class="w-100 d-flex justify-content-center">
+            <div class="rounded-4 card-nosotros  px-3  px-md-5">
+                @Html.Raw(ViewBag.historia)
+            </div>
+        </div>       
+    </div>
+              
+</section>
+
+
+<script src="~/js/views/historia.js" asp-append-version="true"></script>

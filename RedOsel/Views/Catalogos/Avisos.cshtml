@@ -1,0 +1,321 @@
+﻿@{
+    ViewBag.Title = "Avisos";
+}
+
+<main id="appArchivos">
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-md-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel w-100 h-100 d-flex align-items-center justify-content-center icon icon-gradient bi bi-exclamation-circle"></i>
+                </div>
+            </div>
+            <div class="col-9 col-md-11 p-2">
+                <h5>Avisos</h5>
+                <span>Administración de avisos</span>
+            </div>
+        </div>
+
+        <!-- Inicio acordeón -->
+        <div id="acordeonProductos" class="col-12 mt-3">
+            <div class="card">
+                <div class="card-header bg-blue-dark"
+                     style="cursor: pointer"
+                     @@click="abreAcordion"
+                     data-toggle="collapse"
+                     data-target="#collapseOne"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    <div class="row">
+                        <div class="col-11">
+                            <h5 class="m-0 text-white">Filtros</h5>
+                        </div>
+                        <div class="col-1">
+                            <span :class="icono" class="text-white"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapseOne"
+                     class="collapse"
+                     aria-labelledby="headingOne"
+                     data-parent="#acordeonProductos"
+                     aria-describedby="accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Descripción</div>
+                                    </div>
+                                    <input type="text" class="form-control" v-model="value.descripcionFiltro" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="btn btn-secondary" @@click="limpiar(0)">
+                                    <span class="lnr lnr-undo">&nbsp;</span>
+                                    Limpiar filtros
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-prepend-primary" @@click="getAvisos">
+                                    <span class="lnr lnr-magnifier">&nbsp;</span>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Acordeón -->
+
+        <div class="col-12 mt-3">
+            <button class="btn btn-prepend-primary mb-2" @@click="agregarAviso">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar aviso
+            </button>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="header-table">
+                        <tr>
+                            <th>Acción</th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    ID
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.id.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.id.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Descripción
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.descripcion.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.descripcion.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Tipo de  Aviso
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.tipo.iconoAsc" role="button" @@click="eligeFiltro(6)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.tipo.iconoDesc" role="button" @@click="eligeFiltro(6, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Fecha
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.fecha.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.fecha.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Publicado
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.publicado.iconoAsc" role="button" @@click="eligeFiltro(4)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.publicado.iconoDesc" role="button" @@click="eligeFiltro(4, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Aviso Principal
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.principal.iconoAsc" role="button" @@click="eligeFiltro(5)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="array.avisos.length === 0" :class="sorted.principal.iconoDesc" role="button" @@click="eligeFiltro(5, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-cloak v-for="item in array.avisos" :key="item.id_usuario">
+                            <td class="text-nowrap">
+                                <button class="btn" title="Editar Aviso" @@click="getAviso(item)">
+                                    <span class="lnr lnr-pencil"></span>
+                                </button>
+                                <button class="btn" title="Eliminar Aviso" @@click="avisoElimina(item)">
+                                    <span class="lnr lnr-trash"></span>
+                                </button>
+                            </td>
+                            <td>{{item.idAviso}}</td>
+                            <td>{{item.descripcion}}</td>
+                            <td>{{item.tipo}}</td>
+                            <td>{{getDate(item.fecha)}}</td>
+                            <td>{{item.publicar ? 'Si': 'No'}}</td>
+                            <td>{{item.avisoPrincipal ? 'Si': 'No'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal: Usuario -->
+        <div class="modal fade"
+             ref="modalAviso"
+             data-backdrop="static"
+             data-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="staticBackdropLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{tituloModal}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="label-primary m-0">Descripción</label>
+                                <input v-model="value.descripcion"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1 mw-100"
+                                       placeholder="Máximo 250 caracteres"
+                                       autocomplete="off" />
+                            </div>
+
+                            <div class="col-12 col-md">
+                                <label class="label-primary m-0">Fecha</label>
+                                <input v-model="value.fecha"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1 flatpickr-date"
+                                       placeholder="dd/mm/aaaa"
+                                       autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-md">
+                                <label class="label-primary m-0">Tipo</label>
+                                <select class="form-control border-top-0 border-left-0 border-right-0 border-bottom" v-model="ddl.tipoAviso">
+                                    <option value="0">Seleccione</option>
+                                    <option v-for="item in array.tiposAviso" :value="item.id_clave">{{item.cadena}}</option>
+                                </select>
+                            </div>
+
+                            <div class="w-100">
+
+                            </div>
+                            <div class="col-6 col-md">
+                                <div class="custom-control custom-switch h-100 w-100 d-flex align-items-center justify-content-start mt-3">
+                                    <input type="checkbox" class="custom-control-input" ref="chkPublicado" v-model="check.publicado" />
+                                    <label class="custom-control-label" @@click="$refs.chkPublicado.click()">Publicado</label>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md">
+                                <div class="d-flex w-100 h-100 justify-content-between align-items-end mt-3">
+                                    <div class="custom-control custom-switch h-100 w-100 d-flex align-items-center justify-content-start">
+                                        <input type="checkbox" class="custom-control-input" ref="chkPrincipal" v-model="check.principal" />
+                                        <label class="custom-control-label" @@click="$refs.chkPrincipal.click()">Aviso flotante</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md">
+                                <div class="d-flex w-100 h-100 justify-content-between align-items-end mt-3">
+                                    <div class="custom-control custom-switch h-100 w-100 d-flex align-items-center justify-content-start">
+                                        <input type="checkbox" class="custom-control-input" ref="chkLink" v-model="check.link" @@click="activaLink" />
+                                        <label class="custom-control-label" @@click="$refs.chkLink.click()">Aviso de URL</label>
+                                    </div>
+                                </div>
+                            </div>
+                                               
+                        </div>
+
+                        <div class="col-12" v-if="check.link">
+                            <label class="label-primary m-0">URL</label>
+                            <div class="d-flex ">
+                                <input v-model="value.url"
+                                       type="text"
+                                       required
+                                       class="cg-input-adicional p-1"
+                                       autocomplete="off" />
+                                <div class="custom-control custom-switch text-nowrap my-auto disabled" v-if="false">
+                                    <input type="checkbox" class="custom-control-input" v-model="check.video"  hidden />
+                                    <label class="custom-control-label">Link de Vídeo</label>
+                                </div>
+                            </div>
+                            <h6>
+                                <small class="text-danger">
+                                    <i>
+                                        Nota: Al capturar una URL como LIGA DIRECTA, todos los archivos de este aviso serán ignorados y eliminados, sólo funcionará la liga/url.
+                                        <br />Sólo agregar links de <b><u>vídeos</u></b> sí es para Aviso flotante, URLs para redireccionamientos no aplican para este tipo de aviso.
+                                        <br />Sí es un <b><u>archivo</u></b> agregarlo en la pestaña de Archivos.
+                                    </i>
+                                </small>
+                            </h6>
+                            
+                        </div>
+
+                        <div class="col-12 px-0">
+                            <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                                <li class="nav-item border-bottom" role="presentation">
+                                    <button class="nav-link" ref="btnArchivos" :disabled="disabled.archivos" data-toggle="tab" data-target="#archivos" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                        Archivos
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+
+                                <div class="tab-pane fade py-3" id="archivos" role="tabpanel">
+                                    <archivos ref="archivos"
+                                              :id-tipo-multimedia="tipoMultimedia.archivos"
+                                              :id-origen="idAviso">
+                                    </archivos>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardar">
+                            <span class="lnr lnr-checkmark-circle">&nbsp;</span>Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <span class="lnr lnr-cross-circle">&nbsp;</span>Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<partial name="Componentes/Componente_Archivos" />
+
+
+<script src="~/js/views/avisos.js" asp-append-version="true"></script>

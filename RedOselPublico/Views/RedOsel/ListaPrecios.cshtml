@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Listas de Precios";
+}
+
+
+
+<section id="appListaPrecios">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">
+                Lista de Precios
+            </span>
+            <div class="border-box"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 px-5 text-center">
+        </div>
+    </div>
+
+
+    <div class="container my-2 px-md-5" v-cloak>
+        <div class="row h-100 px-lg-5">
+            <div v-cloak v-for="item in array.listaPrecios" class="col-12 col-md-6 px-md-3 px-2">
+                <div class="card shadow-osel border px-3 py-4 rounded-4 gap-3 h-100">
+                    <p class="m-0 fw-bold fs-6 text-warning-3 text-lg-start">
+                        {{item.nombre}}
+                    </p>
+                    <div class="d-flex justify-content-between w-100 border-bottom border-1" v-for="i in item.multimedia" v-if="item.multimedia && item.multimedia.length > 0">
+                        <p class="m-0 d-flex flex-column text-lg fw-bold text-xs text-md-center text-lg-start ">
+                            <span class="fs-6-5">{{i.titulo}}</span>
+                            <span class="fs-7 fw-bold text-blue">
+                                {{i.fecha}}
+                            </span>
+                        </p>
+                        <div>
+                            <a :title="i.archivo"
+                               class="me-2  fs-7-5 mb-1 btn btn-outline-primary text-blue mt-2"
+                               @@click="verArchivo($event, i)">
+                                Ver
+                                &nbsp;
+                                <span class="bi bi-eye"
+                                      title="Ver">
+                                </span>
+                            </a>
+                            <a role="link" :title="i.archivo" :href="i.ruta" download target="_blank" class="me-2  fs-7-5 mb-1 btn btn-custom-2 mt-2">
+                                Descargar
+                                &nbsp;
+                                <span class="bi bi-download"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <span class="fs-6-5">Sin lista disponibles</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12" v-if="array.listaPrecios.length === 0">
+                @* <h3 class="fw-bold text-center">Sin listas de precios disponibles</h3> *@
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/lista-precios.js" asp-append-version="true"></script>

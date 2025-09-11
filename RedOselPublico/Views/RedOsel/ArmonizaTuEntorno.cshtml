@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Armoniza tu Entorno";
+}
+
+
+<section id="appArmonizaTuEntorno">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color:#ffffff !important">
+                Armoniza tu Entorno
+            </span>
+            <div class="border-box" style="border-color:#ffffff !important"></div>
+        </div>
+        <div class="text-normal m-0 fs-7 text-center">
+        </div>
+    </div>
+
+    <div class="container my-2 px-md-5" v-cloak>
+        <div class="row h-100 px-lg-5">
+            <div v-cloak v-for="item in array.galerias" class="col-12 col-md-6 px-3">
+                <div class="flex-column card shadow-osel border px-3 py-4 flex-lg-row align-items-center rounded-4 justify-content-sm-between d-flex gap-1 gap-lg-3">
+                    <p class="m-0  fw-bold fs-6">
+                        {{item.titulo}}
+                        <!--<br />
+                        <span class="text-date fw-bold text-blue">
+                            {{item.fecha}}
+                        </span>-->
+                    </p>
+                    <a role="button" :href="item.ruta" target="_blank" class="btn btn-custom-2 fs-7-5 ">
+                        Descargar
+                        &nbsp;
+                        <span class="bi bi-download"></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12" v-if="array.galerias.length === 0">
+                @* <h3 class="fw-bold text-center">Sin galerías de color disponibles</h3> *@
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/armoniza-tu-entorno.js" asp-append-version="true"></script>

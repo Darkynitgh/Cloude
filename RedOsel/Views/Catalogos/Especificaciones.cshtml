@@ -1,0 +1,339 @@
+﻿@{
+    ViewBag.title = "Especificaciones";
+}
+
+<main id="appEspecificaciones" class="row">
+    <div class="div-bg col-12 row">
+        <div class="col-3 col-sm-1 p-2">
+            <div class="card ico-osel">
+                <i class="bg-osel icon icon-gradient pe-7s-paint"></i>
+            </div>
+        </div>
+        <div class="col-9 col-sm-11 p-2">
+            <h5>Especificaciones</h5>
+            <span>Administración de las especificaciones por empresa</span>
+        </div>
+    </div>
+
+    <!-- Inicio acordeón -->
+    <div id="acordeonProductos" class="col-12 mt-3">
+        <div class="card">
+            <div class="card-header bg-blue-dark"
+                 style="cursor: pointer"
+                 @@click="abreAcordion"
+                 data-toggle="collapse"
+                 data-target="#collapseOne"
+                 aria-expanded="true"
+                 aria-controls="collapseOne">
+                <div class="row">
+                    <div class="col-11">
+                        <h5 class="m-0 text-white">Filtros</h5>
+                    </div>
+                    <div class="col-1">
+                        <span :class="icono" class="text-white"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne"
+                 class="collapse"
+                 aria-labelledby="headingOne"
+                 data-parent="#acordeonProductos"
+                 aria-describedby="accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text btn-prepend-primary">Descripcion</div>
+                                </div>
+                                <input type="text" class="form-control" v-model="value.descripcionFiltro" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="button" class="btn btn-secondary" @@click="limpiar(0)">
+                                <span class="lnr lnr-undo">&nbsp;</span>
+                                Limpiar filtros
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-prepend-primary" @@click="getEspecificaciones">
+                                <span class="lnr lnr-magnifier">&nbsp;</span>
+                                Consultar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Acordeón -->
+
+    <div class="col-12">
+        <div class="w-100 d-flex justify-content-between">
+            <button class="btn btn-prepend-primary" @@click="agregarEspecificacion">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar especificación
+            </button>
+            <select class="form-control w-auto d-inline-flex mt-2" title="Cantidad de Elementos en Tabla" @@change="cambiaPaginacion()" v-model="ddl.paginacion">
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="header-table">
+                    <tr>
+                        <th>Acciones</th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                ID
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.id.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.id.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Descripción
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.descripcion.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.descripcion.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                URL
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.url.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.url.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Publicado
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.publicado.iconoAsc" role="button" @@click="eligeFiltro(4)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.publicado.iconoDesc" role="button" @@click="eligeFiltro(4, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Orden
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.orden.iconoAsc" role="button" @@click="eligeFiltro(5)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.orden.iconoDesc" role="button" @@click="eligeFiltro(5, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in filtered" :key="item.id">
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm" @@click="getEspecificacion(item)" title="Detalle especificación">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <button class="btn btn-sm" @@click="especificacionElimina(item)" title="Eliminar especificación">
+                                <span class="bi bi-trash"></span>
+                            </button>
+                        </td>
+                        <td>{{item.idEspecificacion}}</td>
+                        <td>{{item.titulo}}</td>
+                        <td><a :href="item.url" target="_blank">{{item.url}}</a></td>
+                        <td>{{item.publicado ? 'Si': 'No'}}</td>
+                        <td>{{item.orden}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="filtered.length === 0">
+                <h4>Sin especificaciones disponibles</h4>
+            </div>
+            <div v-else>
+                <ul class="pagination pagination-sm justify-content-center">
+                    <li class="page-item">
+                        <button type="button" class="page-link"
+                                v-on:click="onClickFirstPage"
+                                :disabled="isInFirstPage"
+                                title="Primero">
+
+                            <i class="bi bi-chevron-bar-left"></i>
+                        </button>
+                    </li>
+
+                    <li class="page-item">
+                        <button type="button" class="page-link"
+                                v-on:click="onClickPreviousPage"
+                                :disabled="isInFirstPage"
+                                title="Anterior">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                    </li>
+                    <!-- Visible Buttons Start -->
+                    <li v-for="page in pages"
+                        class="page-item"
+                        :class="{ active: isPageActive(page.name) || page.isDisabled == true}">
+                        <button type="button" class="page-link"
+                        @* :disabled="page.isDisabled" *@
+                                :class="{ active: isPageActive(page.name) || page.isDisabled == true}"
+                                v-on:click="onClickPage(page.name)"
+                                title="Siguiente">
+                            {{ page.name }}
+                        </button>
+                    </li>
+                    <!-- Visible Buttons End -->
+                    <li class="page-item">
+                        <button type="button" class="page-link"
+                                v-on:click="onClickNextPage"
+                                :disabled="isInLastPage"
+                                title="Siguiente">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <button type="button" class="page-link"
+                                v-on:click="onClickLastPage"
+                                :disabled="isInLastPage"
+                                title="Último">
+                            <i class="bi bi-chevron-bar-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" ref="modalEspecificaciones" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{tituloModal}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <label class="label-primary m-0">Descripción</label>
+                            <input v-model="value.descripcion"
+                                   type="text"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off" />
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="d-flex h-100 w-100 align-items-end mt-2 mt-md-0 justify-content-center">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" ref="chkPublicado" v-model="check.publicado" />
+                                    <label class="custom-control-label" @@click="$refs.chkPublicado.click()">Publicado</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-2">
+                            <label class="label-primary m-0">Orden</label>
+                            <input v-model="value.orden"
+                                   type="number"
+                                   step="1"
+                                   min="0"
+                                   max="150"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off"
+                                   onfocus="this.select()"
+                                   inputmode="numeric" />
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <label class="label-primary m-0">URL</label>
+                            <input v-model="value.url"
+                                   type="text"
+                                   @@focusout="isUrlValid(value.url)"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off" />
+                        </div>
+                        <div class="col-12">
+                            <label class="label-primary m-0">Contenido</label>
+                            <textarea style="resize:none;" class="w-100" rows="3" v-model="value.contenido"></textarea>
+                        </div>
+                        
+                        <div class="col-12 mt-3 px-0 py-2">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" ref="btnImagenEmpresa" :disabled="disabled.imagenEmpresa" data-target="#imagenEmpresa" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Logo Empresa
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" :disabled="disabled.archivos" data-target="#archivos" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Archivos
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade py-1" id="imagenEmpresa" role="tabpanel">
+                                    <imagen-empresa ref="imagenEmpresa"
+                                                    :id-tipo-multimedia="tipoMultimedia.imagenEmpresa"
+                                                    :id-origen="idEspecificacion">
+                                    </imagen-empresa>
+                                </div>
+
+                                <div class="tab-pane fade py-1" id="archivos" role="tabpanel">
+                                    <archivos ref="archivos"
+                                              :id-tipo-multimedia="tipoMultimedia.archivos"
+                                              :id-origen="idEspecificacion">
+                                    </archivos>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="guardar">
+                        <span class="bi bi-check-circle"></span>
+                        Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary ml-1" data-dismiss="modal">
+                        <span class="bi bi-x-circle"></span>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<partial name="Componentes/Componente_Archivos" />
+
+<script src="~/js/views/especificaciones.js" asp-append-version="true"></script>
+
+

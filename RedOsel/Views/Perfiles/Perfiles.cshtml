@@ -1,0 +1,153 @@
+﻿
+
+<main id="appPerfiles">
+    <input hidden class="d-none" v-show="false" value="@ViewBag.tipo" ref="inputTipo" />
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-md-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel icon icon-gradient lnr lnr-users"></i>
+                </div>
+            </div>
+            <div class="col-9 col-md-11 p-2">
+                <h5>@ViewBag.Title</h5>
+                <span>Administración de perfiles</span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button class="btn btn-prepend-primary mb-2" @@click="agregarPerfil">
+                <span class="lnr lnr-dice">&nbsp;</span>
+                Agregar perfil
+            </button>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="header-table">
+                        <tr>
+                            <th></th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Perfil
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="perfiles.length === 0" :class="sorted.perfil.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="perfiles.length === 0" :class="sorted.perfil.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Estatus
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="perfiles.length === 0" :class="sorted.estatus.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="perfiles.length === 0" :class="sorted.estatus.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(perfil, index) in perfiles" :key="perfil.id">
+                            <td class="text-nowrap">
+                                <button class="btn" title="Editar Perfil" @@click="getPerfil(perfil)">
+                                    <span class="lnr lnr-pencil"></span>
+                                </button>
+                                <button class="btn" title="Editar Accesos" @@click="getPermisos(perfil)">
+                                    <span class="lnr lnr-enter"></span>
+                                </button>
+                                <button class="btn" title="Eliminar Perfil" @@click="eliminarPerfil(perfil)">
+                                    <span class="lnr lnr-trash"></span>
+                                </button>
+                            </td>
+                            <td>{{ perfil.perfil }}</td>
+                            <td>{{ perfil.estatus }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal: Perfiles -->
+        <div class="modal fade" id="modal_perfil" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">{{ titulo_modal }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <label class="label-primary">Descripción</label>
+                                <input type="text" v-model="descripcion" class="cg-input-adicional p-1" autocomplete="off" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="label-primary">Estatus</label>
+                                <select class="form-control select-custom-po" v-model="ddl.estatus">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="estatu in estatus" :key="estatu.id_clave" :value="estatu.id_clave">{{ estatu.cadena }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="hdnIdPerfil" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardar">
+                            <span class="lnr lnr-checkmark-circle">&nbsp;</span>Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <span class="lnr lnr-cross-circle">&nbsp;</span>Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Opciones -->
+        <div class="modal fade" id="modal_opciones" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Configuración de Acceso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <ul>
+                                <li v-for="(opcion, index) in opciones" class="list-unstyled"  :key="index">
+                                    <div class="w-100 d-flex align-items-center">
+                                        <input type="checkbox" :id="'chk_' + opcion.id_opcion" v-model="opcion.acceso" :disabled="opcion.disabled" />
+                                        &nbsp;&nbsp;
+                                        <label class="m-0" :for="'chk_' + opcion.id_opcion">{{ opcion.descripcion }}</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <input type="hidden" id="hdnIdPerfilOpciones" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @@click="guardarOpciones">
+                            <span class="lnr lnr-checkmark-circle">&nbsp;</span>Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <span class="lnr lnr-cross-circle">&nbsp;</span>Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/js/views/perfiles.js" asp-append-version="true"></script>

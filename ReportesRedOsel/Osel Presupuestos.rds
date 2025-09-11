@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="Osel Presupuestos">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=201.174.56.67;Initial Catalog=presupuestos;User ID=oselapp;Password=po$6l1pps;Connect Timeout=180; Integrated Security=False</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>d16c81ca-e447-426b-9095-24c2589bb894</DataSourceID>
+</RptDataSource>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Dicopint";
+}
+
+
+<section id="appDico">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color: #593434 !important">Dicopint</span>
+            <div class="border-box" style="border-color:#593434 !important"></div>
+        </div>
+        <p class="text-normal m-0 fs-7 text-center">
+
+        </p>
+    </div>
+
+    <div class="container mb-2 mt-5">
+        <div class="row">   
+
+
+            <div class="col-12 col-md-6 col-xl-4 fs-6 text-justify line-h-1-1 pe-md-4 px-2">
+                <div class="bg-white py-4 px-5 fs-6 bg-opacity-50 rounded-4">
+                    <h5><span>Dicopint</span></h5>
+                    <p>
+                        <b>Dicopint</b> (<b>D</b>istribuidores <b>I</b>ntegrados en <b>Co</b>mplementos para <b>Pint</b>ura) es una unión de compras de productos complementarios para pintura y artículos promocionales de los Distribuidores Osel.
+                    </p>
+                    <p>
+                        Dicopint es una asociación que no persigue fines de lucro, su principal objetivo es mejorar la competitividad de los Distribuidores Osel a través de aumentar la disponibilidad y reducir los costos de complementos de pintura y artículos promocionales.
+                    </p>
+                    <p>
+                        Dicopint ofrece las siguientes ventajas:
+                    </p>
+                    <ul>
+                        <li>Obtener mejores condiciones de compra y descuentos de los proveedores de complementos para pintura y artículos promocionales.</li>
+                        <li>
+                            Acceso a proveedores líderes en complementos para pintura.
+                        </li>
+                        <li>Trato preferencial por parte de los proveedores.</li>
+                        <li>Recibir estados de cuentas periódicamente por parte de los proveedores.</li>
+                        <li>Apoyo por parte de Dicopint para seguimiento con sus proveedores.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-8 ps-md-5 px-2">
+                <div class="col-12 mb-2 text-start m-0 fs-6">Dicopint est&aacute; integrado por las siguientes marcas l&iacute;deres en su ramo</div>
+                <div class="d-flex flex-wrap">
+                    <div class="col-6 col-md-6 col-lg-4 col-xl-3 mt-0" v-for="(item, index) in array.dicos" :key="index" v-if="array.dicos && array.dicos.length > 0">
+                        <div class="d-flex justify-content-center align-items-start shadow-osel p-1  bg-white rounded-3" style="height:125px;width:100%;">
+                            <figure class="text-center rounded-3 m-0 d-flex flex-column  ">
+                                <img style="height:80px;max-width:100%;"
+                                     data-bs-toggle="tooltip"
+                                     data-bs-placement="top"
+                                     :alt="item.nombre"
+                                     :src="item.src"
+                                     :title="item.descripcion" />
+                                <figcaption class="mt-2 fs-7 fw-bold ">{{item.nombre}}</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div v-else>
+                        @* <h4>Sin datos disponibles</h4> *@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    
+    </div>
+</section>
+
+
+<script src="~/js/views/dicopint.js" asp-append-version="true"></script>

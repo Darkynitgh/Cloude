@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Identidad";
+}
+
+<section>
+    <div class="background-container-banner  py-2 position-relative d-block" id="divBanner">
+        <img class="bg-banner d-none" id="bannerIdentidad" alt="banner">
+        <div class="container d-flex flex-column">
+            <div class="container-text d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+                <!-- Columna de bienvenida -->
+                <div class="col-12  p-0 m-0 text-center text-md-start">
+                    <h3 class="fw-bold m-0 text-white text-shadow-osel">
+                        IDENTIDAD
+                    </h3>
+                    <p class="text-base text-light m-0  fs-6 d-md-block d-none">
+                        El objetivo de este manual es el de establecer los parámetros en cuanto a imagen, tipografía y diseños del logotipo y colores de Pinturas Osel.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-sm my-2 mt-3">
+        <div class="w-100 d-flex justify-content-center">
+            <div class="rounded-4 card-manual">
+                <div class="col-12 p-1">
+                    <p class="m-0 text-lg fw-bold text-center" style="color: #2196f3;">
+                        Manual de Identidad
+                    </p>
+                    <div class="d-flex justify-content-center align-items-center mt-2">
+                        <a href="~/Documentos/Manuales/manual-identidad-OSEL.pdf" target="_blank">
+                            <img src="~/imagenes/Manuales/portada-manual-identidad.jpg" class="img-identidad" alt="Pinturas Osel">
+                        </a>
+                    </div>
+                    <div class ="text-center">
+                        <a role="link" :title="i.archivo" :href="i.ruta" download target="_blank" href="~/Documentos/Manuales/manual-identidad-OSEL.pdf" class="me-2 mb-1 btn btn-custom-2 mt-2">
+                            
+                            Descargar
+                            &nbsp;
+                            <span class="bi bi-download"></span>
+                        </a>
+                    </div>
+                </div>
+                <p class="text-center txt-identidad">
+                    <strong>* </strong>Selecciona la imagen y podrás hojear electrónicamente este documento.
+                </p>
+                <p class="text-center txt-identidad">
+                    Para cualquier información adicional comunícate al departamento de Mercadotecnia (mercadotecnia@pinturasosel.com)
+                </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script src="~/js/views/identidad.js" asp-append-version="true"></script>

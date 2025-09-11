@@ -1,0 +1,682 @@
+﻿@{
+    ViewBag.title = "Productos";
+}
+
+<main id="appProductos">
+    <div class="row">
+        <div class="div-bg col-12 row">
+            <div class="col-3 col-sm-1 p-2">
+                <div class="card ico-osel">
+                    <i class="bg-osel icon icon-gradient pe-7s-paint"></i>
+                </div>
+            </div>
+            <div class="col-9 col-sm-11 p-2">
+                <h5>Productos</h5>
+                <span>Administración de productos</span>
+            </div>
+        </div>
+
+        <!-- Inicio acordeón -->
+        <div id="acordeonProductos" class="col-12 mt-3">
+            <div class="card">
+                <div class="card-header bg-blue-dark"
+                     style="cursor: pointer"
+                     @@click="abreAcordion"
+                     data-toggle="collapse"
+                     data-target="#collapseOne"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    <div class="row">
+                        <div class="col-11">
+                            <h5 class="m-0 text-white">Filtros</h5>
+                        </div>
+                        <div class="col-1">
+                            <span :class="icono" class="text-white"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapseOne"
+                     class="collapse"
+                     aria-labelledby="headingOne"
+                     data-parent="#acordeonProductos"
+                     aria-describedby="accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-3">
+                                <div class="d-flex w-100 justify-content-start h-100 align-items-end">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" ref="chkAgua" v-model="check.aguaFiltro" @@click="checkTipo(1)" />
+                                        <label class="custom-control-label" @@click="$refs.chkAgua.click()">Agua</label>
+                                    </div>
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" ref="chkSolvente" v-model="check.solventeFiltro" @@click="checkTipo(2)" />
+                                        <label class="custom-control-label" @@click="$refs.chkSolvente.click()">Solvente</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Familia</div>
+                                    </div>  
+                                    <select v-model="ddl.familiaFiltro"
+                                            class="form-control select-custom-po" 
+                                            :disabled="array.familias.length === 0">
+                                        <option :value="0">TODOS</option>
+                                        <option v-for="item in array.familias" :key="item.idFamilia" :value="item.idFamilia">
+                                            {{item.descripcion}}
+                                        </option>
+                                    </select>
+                                </div>                              
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Nombre</div>
+                                    </div>
+                                    <input type="text" class="form-control" autocomplete="off" v-model="value.nombreFiltro" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Código</div>
+                                    </div>
+                                    <input type="text" class="form-control" v-model="value.codigoFiltro" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text btn-prepend-primary">Estatus</div>
+                                    </div>
+                                    <select class="form-control select-custom-po" v-model="ddl.estatus">
+                                        <option value="-1">Todos</option>
+                                        <option value="1">Publicados</option>
+                                        <option value="0">No Publicado</option>
+                                    </select>
+                                </div>
+                           
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <button type="button" class="btn btn-secondary" @@click="limpiar(0)">
+                                    <span class="lnr lnr-undo">&nbsp;</span>
+                                    Limpiar filtros
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-prepend-primary" @@click="getProductos">
+                                    <span class="lnr lnr-magnifier">&nbsp;</span>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Acordeón -->
+
+        <div class="col-12">
+            <div class="w-100 d-flex justify-content-between">
+                <button class="btn btn-prepend-primary" @@click="agregarProducto">
+                    <span class="bi bi-plus-square">&nbsp;</span>
+                    Agregar producto
+                </button>
+                <select class="form-control w-auto d-inline-flex mt-2" title="Cantidad de Elementos en Tabla" @@change="cambiaPaginacion()" v-model="ddl.paginacion">
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+
+            <div class="table-responsive" v-cloak>
+                <table class="table table-striped" v-cloak>
+                    <thead class="header-table">
+                        <tr>
+                            <th>Acciones
+
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    ID
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.id.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.id.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Familia
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.familia.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.familia.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Código
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.codigo.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.codigo.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Nombre
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.nombre.iconoAsc" role="button" @@click="eligeFiltro(4)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.nombre.iconoDesc" role="button" @@click="eligeFiltro(4, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Publicado
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.publicado.iconoAsc" role="button" @@click="eligeFiltro(5)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.publicado.iconoDesc" role="button" @@click="eligeFiltro(5, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    Orden
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.orden.iconoAsc" role="button" @@click="eligeFiltro(6)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.orden.iconoDesc" role="button" @@click="eligeFiltro(6, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    H.D.S.
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.hoja.iconoAsc" role="button" @@click="eligeFiltro(7)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.hoja.iconoDesc" role="button" @@click="eligeFiltro(7, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-end w-100">
+                                    H.T.
+                                    <div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.ficha.iconoAsc" role="button" @@click="eligeFiltro(8)"></button>
+                                        </div>
+                                        <div class="w-100" style="max-height:13px;">
+                                            <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.ficha.iconoDesc" role="button" @@click="eligeFiltro(8, false)"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in filtered" :key="item.id" v-cloak>
+                            <td class="text-nowrap">
+                                <button class="btn btn-sm" @@click="getProducto(item)" title="Detalle producto">
+                                    <span class="lnr lnr-magnifier"></span>
+                                </button>
+                                <button class="btn btn-sm" @@click="productoElimina(item)" title="Eliminar producto">
+                                    <span class="bi bi-trash"></span>
+                                </button> 
+                            </td>
+                            <td>{{item.id_producto}}</td>
+                            <td>{{item.familia}}</td>
+                            <td>{{item.codigo}}</td>
+                            <td>{{item.nombre}}</td>
+                            <td>{{item.publicado}}</td>
+                            <td>{{item.orden}}</td>
+                            <td>{{item.totalHojaSeguridad}}</td>
+                            <td>{{item.totalFichaTecnica}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div v-if="filtered.length === 0">
+                    <h4>Sin productos disponibles</h4>
+                </div>
+                <div v-else>
+                    <ul class="pagination pagination-sm justify-content-center">
+                        <li class="page-item">
+                            <button type="button" class="page-link"
+                                    v-on:click="onClickFirstPage"
+                                    :disabled="isInFirstPage"
+                                    title="Primero">
+
+                                <i class="bi bi-chevron-bar-left"></i>
+                            </button>
+                        </li>
+
+                        <li class="page-item">
+                            <button type="button" class="page-link"
+                                    v-on:click="onClickPreviousPage"
+                                    :disabled="isInFirstPage"
+                                    title="Anterior">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                        </li>
+                        <!-- Visible Buttons Start -->
+                        <li v-for="page in pages"
+                            class="page-item"
+                            :class="{ active: isPageActive(page.name) || page.isDisabled == true}">
+                            <button type="button" class="page-link"
+                                    @* :disabled="page.isDisabled" *@
+                                    :class="{ active: isPageActive(page.name) || page.isDisabled == true}"
+                                    v-on:click="onClickPage(page.name)"
+                                    title="Siguiente">
+                                {{ page.name }}
+                            </button>
+                        </li>
+                        <!-- Visible Buttons End -->
+                        <li class="page-item">
+                            <button type="button" class="page-link"
+                                    v-on:click="onClickNextPage"
+                                    :disabled="isInLastPage"
+                                    title="Siguiente">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </li>
+                        <li class="page-item">
+                            <button type="button" class="page-link"
+                                    v-on:click="onClickLastPage"
+                                    :disabled="isInLastPage"
+                                    title="Último">
+                                <i class="bi bi-chevron-bar-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" ref="modalProducto" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{tituloModal}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body px-2 py-1">
+                    <div class="row w-100 h-100 p-0 m-0">
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <label class="label-primary m-0">Nombre</label>
+                            <input v-model="value.nombre"
+                                   type="text"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off"/>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <label class="label-primary m-0">Código</label>
+                            <input v-model="value.codigo"
+                                    type="text"
+                                    class="cg-input-adicional p-1"
+                                autocomplete="off" />
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="d-flex h-100 w-100 align-items-end mt-2 mt-md-0">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" ref="chkPublicado" v-model="check.publicado" />
+                                    <label class="custom-control-label" @@click="$refs.chkPublicado.click()">Publicado</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <label class="label-primary m-0">Orden</label>
+                            <input v-model="value.orden"
+                                   type="number"
+                                   step="1"
+                                   min="0"
+                                   max="150"
+                                   class="cg-input-adicional p-1"
+                                   autocomplete="off"
+                                   onfocus="this.select()"
+                                   inputmode="numeric"/>
+                        </div>
+                        <div class="col-12  col-md-6  col-lg-3">                         
+                            <label class="label-primary m-0">Tipo Naturaleza</label>
+                            <div class="d-flex w-100 justify-content-around h-100 align-items-start my-2 my-md-0">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" ref="chkAguaT" :checked="check.agua" @@click="checkTipo(1,1)" />
+                                    <label class="form-check-label" @@click="$refs.chkAguaT.click()">Agua</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" ref="chkSolventeT" :checked="check.solvente" @@click="checkTipo(2,1)" />
+                                    <label class="form-check-label" @@click="$refs.chkSolventeT.click()">Solvente</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12  col-md-6 col-lg-3">
+                            <label class="label-primary m-0">Familia</label>
+                            <select v-model="ddl.familia"
+                                    class="form-control select-custom-po p-1"
+                                    :disabled="array.familias.length === 0">
+                                <option :value="0">Seleccione</option>
+                                <option v-for="item in array.familias" :key="item.idFamilia" :value="item.idFamilia">
+                                    {{item.descripcion}}
+                                </option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-12">                            
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="label-primary m-0">Descripción</label>
+                            <textarea style="min-width:100%;resize:none;" v-model="value.descripcion" rows="5"></textarea>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="label-primary m-0">Usos</label>
+                            <textarea style="min-width:100%;resize:none;" v-model="value.usos" rows="5"></textarea>
+                        </div>
+                        
+                        <div class="col-12">
+                            <hr />
+                        </div>
+
+                        <div class="col-12">            
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item border-bottom" role="presentation">
+                                    <button class="nav-link active" ref="tabCaract" data-toggle="tab" data-target="#caracteristicas" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                        Características
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" data-target="#envasado" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                                        Envasado
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" data-target="#especificaciones" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Especificaciones
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" :disabled="disabled.imagenProducto" data-target="#imagenProducto" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Imagen del Producto
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" :disabled="disabled.hojaSeguridad" data-target="#hojaSeguridad" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Hojas de Seguridad
+                                    </button>
+                                </li>
+                                <li class="nav-item ml-1 border-bottom" role="presentation">
+                                    <button class="nav-link" data-toggle="tab" :disabled="disabled.fichaTecnica" data-target="#fichaTecnica" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                                        Fichas Técnicas
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active py-3" id="caracteristicas">
+                                    <textarea id="carac"></textarea>
+                                </div>
+
+                                <div class="tab-pane fade py-3" id="envasado" role="tabpanel">
+                                    <textarea id="enva"></textarea>
+                                </div>
+
+                                <div class="tab-pane fade py-3" id="especificaciones" role="tabpanel">
+                                    <textarea id="espe"></textarea>
+                                </div>
+
+                                <div class="tab-pane fade py-3" id="imagenProducto" role="tabpanel">
+                                    <imagen-producto ref="imagenProducto"
+                                                     :id-tipo-multimedia="tipoMultimedia.imagenProducto"
+                                                     :id-origen="idProducto">
+                                    </imagen-producto>
+                                </div>
+
+                                <div class="tab-pane fade py-3" id="hojaSeguridad" role="tabpanel">
+                                    <hoja-seguridad ref="hojaSeguridad" 
+                                                    :id-tipo-multimedia="tipoMultimedia.hojaSeguridad" 
+                                                    :id-origen="idProducto">
+                                    </hoja-seguridad>
+                                </div>
+
+                                <div class="tab-pane fade py-3" id="fichaTecnica" role="tabpanel">
+                                    <ficha-tecnica ref="fichaTecnica" 
+                                                   :id-tipo-multimedia="tipoMultimedia.fichaTecnica"
+                                                   :id-origen="idProducto">
+                                    </ficha-tecnica>
+                                </div>
+
+                             
+                            </div>  
+                         </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-md-end justify-content-center">
+                        <button type="button" class="btn btn-outline-success" v-if="idProducto !== 0" @@click="vistaPrevia">
+                            <span class="bi bi-eye"></span>
+                            Vista Previa
+                        </button>
+                        <button type="button" class="btn btn-primary  ml-1" @@click="guardar" :disabled="disabled.guardar">
+                            <span class="bi bi-check-circle"></span>
+                            Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary ml-1" data-dismiss="modal">
+                            <span class="bi bi-x-circle"></span>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" ref="vistaPrevia" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Vista previa del producto en <a target="_blank" href="https://pinturasosel.com/Productos">Pinturas Osel</a></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-1">
+                    <section id="productos-secction">
+                        <div class="DivSecc"></div>
+                        <div class="row">
+                            <!-- Header Section -->
+                            <div class="col-12 row m-0 p-0">
+                                <div class="col-2 col-md-1">
+                                    <button class="btn btn-primary btn-style">
+                                        <span class="lnr lnr-chevron-left"></span>
+                                    </button>
+                                </div>
+                                <div class="col-10 col-md-11">
+                                    <h4 class="mb-0 align-self-center">
+                                        {{ idNaturaleza === 33 ? 'PRODUCT' : 'PRODUCTO' }}:&nbsp;&nbsp;
+                                        <span class="font-weight-bold">{{ producto }}</span>
+                                    </h4>
+                                </div>
+                                <div class="col-12 pl-sm-5 mt-sm-3">
+                                    <ul class="list-inline pl-sm-4 m-0">
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-outline-danger btn-style">
+                                                <i class="pe-7s-mail font-weight-bold"></i>
+                                            </button>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-outline-info btn-style">
+                                                <i class="pe-7s-share font-weight-bold"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-12 m-0 p-0">
+                                <div class="row w-100 h-100 p-0 m-0">
+                                    <div class="col-12 col-md-9">
+                                        <!-- Main Content -->
+                                        <div class="col-12 mt-4">
+                                            <div class="row w-100 h-100 p-0 m-0">
+                                                <div class="col-12 col-md-4 m-0">
+                                                    <p>
+                                                        <strong class="text-info-title">
+                                                            {{ idNaturaleza === 33 ? 'FEATURES:' : 'CARACTERÍSTICAS:' }}
+                                                        </strong>
+                                                    </p>
+                                                    <p v-html="caracteristicas"></p>
+                                                </div>
+                                                <div class="col-12 col-md-8 m-0">
+                                                    <div class="row p-0 w-100 m-0 h-100">
+                                                        <div class="col-6 m-0">
+                                                            <p>
+                                                                <strong class="text-info-title">
+                                                                    {{ idNaturaleza === 33 ? 'AVAILABLE IN:' : 'ENVASADO EN:' }}
+                                                                </strong>
+                                                            </p>
+                                                            <p v-html="envasado"></p>
+                                                        </div>
+                                                        <div class="col-6 m-0 text-center">
+                                                            <img v-if="imagenProducto !== ''" :src="imagenProducto" class="img-fluid img-prod" />
+                                                            <i v-else class="bi bi-card-image" style="font-size:100px;"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer Section -->
+                                        <div class="col-12">
+                                            <div class="col-12 m-0">
+                                                <p>
+                                                    <strong class="text-info-title">
+                                                        {{ idNaturaleza === 33 ? 'GENERAL DESCRIPTION:' : 'Descripción:' }}
+                                                    </strong>
+                                                </p>
+                                                <p>{{ descripcion }}</p>
+                                            </div>
+                                            <div class="col-12 m-0">
+                                                <p>
+                                                    <strong class="text-info-title">
+                                                        {{ idNaturaleza === 33 ? 'RECOMMENDED FOR:' : 'Usos:' }}
+                                                    </strong>
+                                                </p>
+                                                <p>{{ usos }}</p>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6">
+                                                        <div class="row">
+                                                            <div v-for="(ficha, index) in listaFichas"
+                                                                 :key="index"
+                                                                 class="col-6 col-md-4 text-center px-1">
+                                                                <a class="btn btn-light btn-custom mt-2"
+                                                                   style="border-radius: 15px; border: 1px solid #bbc; padding: 5px 3px"
+                                                                   :href="ficha.ruta"
+                                                                   :alt="ficha.nombreArchivo"
+                                                                   target="_blank">
+                                                                    <img src="~/lib/publica/images/svg/card-list.svg" class="img-fluid" />
+                                                                    <p class="m-0" style="font-size: 12px">
+                                                                        <span>H.T. {{ index + 1 }}</span>                                                                      
+                                                                    </p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <div class="row">
+                                                            <div v-for="(hoja, index) in listaHojas"
+                                                                 :key="index"
+                                                                 class="col-6 col-md-4 text-center px-1">
+                                                                <a class="btn btn-light btn-custom mt-2"
+                                                                   style="border-radius: 15px; border: 1px solid #bbc; padding: 5px 3px"
+                                                                   :href="hoja.ruta"
+                                                                   :alt="hoja.nombreArchivo"
+                                                                   target="_blank">
+                                                                    <img src="~/lib/publica/images/svg/file-earmark-lock.svg" class="img-fluid" />
+                                                                    <p class="m-0" style="font-size: 12px">
+                                                                        <span>H.D.S. {{ index + 1 }} </span>
+                                                                    </p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 col-md-3 bg-default h-100 p-3">
+                                        <h4 v-if="idNaturaleza === 3" style="word-break:break-word;">CODE:&nbsp;{{codigo}}</h4>
+                                        <h4 style="word-break:break-word;" v-else>CÓDIGO:&nbsp;{{codigo}}</h4>
+
+                                        <p id="especificaciones" v-html="especificaciones"></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                       
+                        </div>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<partial name="Componentes/Componente_Archivos" />
+
+<script src="~/js/views/productos.js" asp-append-version="true"></script>
+
+

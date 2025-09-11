@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Videoteca Osel";
+}
+
+<section id="appVideos">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder " style="color:#ffffff !important">Videoteca Osel</span>
+            <div class="border-box" style="border-color: #ffffff !important"></div>
+        </div>
+        <p class="text-normal m-0 fs-7 text-center">
+        </p>
+    </div>
+
+    <div class="container mb-2 mt-3" v-cloak>
+        <div class="row h-100 px-2">
+            <div v-cloak >
+                <h6 class="text-center fw-semibold m-0">{{tituloVideo}}</h6>
+                <div class="d-flex justify-content-center  mt-2">
+                    <iframe v-if="mostrar" 
+                            class="size-iframe"
+                            :src="urlVideo"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="mt-2">
+                     
+                    <div id="videoCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" v-for="(item, index) in array.videos" :class="{ active: index === 0 }">
+                                <div class="row justify-content-center align-items-center d-flex w-100">
+
+                                    <div class="col-6 col-md-4 col-xl-2 px-1" v-for="(i, index) in item" @@click="verVideo($event, i)">
+                                        <div class="px-auto text-truncate  text-white text-center hover-img">
+                                            <div class="w-100 justify-content-center align-items-center d-flex">
+                                                <img :src="i.src" class="" style="width:100%; height:120px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Controles del Carrusel -->
+                        <button class="carousel-control-prev opacity-50" v-if="array.videos.length > 1" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon  bg-dark" style="opacity:30"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next opacity-50" v-if="array.videos.length > 1" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon bg-dark" style="opacity:30"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12" v-if="array.videos.length === 0">
+                @* <h3 class="fw-bold text-center">Sin vídeos disponibles</h3> *@
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/videoteca.js" asp-append-version="true"></script>

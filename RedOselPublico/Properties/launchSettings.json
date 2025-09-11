@@ -1,0 +1,60 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5101"
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost/redoselpublico",
+      "environmentVariables": {
+        "ConnectionString": "Data Source=13.92.211.136,1438;Initial Catalog=pinturasOselProduccion;User ID=sa;Password=1nT2l34s5r;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ConnectionStringSOIBodegas": "Data Source=201.174.56.67;Initial Catalog=SOI_Bodegas;User ID=oselapp;Password=po$6l1pps;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ConnectionStringPresupuestos": "Data Source=201.174.56.67;Initial Catalog=presupuestos;User ID=oselapp;Password=po$6l1pps;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ConnectionStringPedidos": "Data Source=201.174.56.67;Initial Catalog=Pedidos;User ID=oselapp;Password=po$6l1pps;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "73d1bfce0ce9e76e76515990bba7ee3690304e6399e3d51c7c8c9ed4699e2065fad5417119309c0c7b462479892944770b6f7776640fa918e32ac8628723a28b",
+        "JWT_REQUIRED_HTTPS": "true",
+        "JWT_ISSUER": "http://localhost/redoselpublico",
+        "JWT_AUDIENCE": "http://localhost/redoselpublico",
+        "RateLimitDevelopment": "99999",
+        "RateLimitProduction": "9999",
+        "ExpireApi": "10",
+        "ExpireRefresh": "240",
+        "LocalAccountName": "desktop-63hkjo5\\intelimatica63",
+        "RutaServidorReportes": "http://localhost/reportserver",
+        "CarpetaReportes": "osel",
+        "UserSSRS": "Intelimatica63",
+        "PasswordSSRS": "Proyectos63",
+        "AlterFolderStaticFiles": "C:\\Proyectos\\RedOsel\\RedOselPublico\\other-files",
+        "UrlRoute": "/other-files"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": true,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/redoselpublico",
+      "sslPort": 0
+    },
+    "iisExpress": {
+      "applicationUrl": "http://localhost:50599/",
+      "sslPort": 44362
+    }
+  }
+}

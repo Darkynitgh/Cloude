@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Productos";
+}
+
+<section id="appProductosHomologados">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">
+                Certificados, Dictámenes, Sellos y Homologaciones
+            </span>
+            <div class="border-box"></div>
+        </div>
+        <div class="text-white m-0 fs-7 px-xl-5 px-md-2 text-center">
+            <p class="px-xl-5 px-md-2">
+                
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container my-2 ">
+        <div class="row w-100 h-100">
+
+            <div class="mb-3 col-12  px-4 col-md-6" v-cloak role="button" @@click="detalleProductoHomologado(item)"  v-for="item in array.productosHomologados" v-if="array.productosHomologados && array.productosHomologados.length > 0">
+                <div class="shadow-osel rounded-4 card">
+                    <div class="d-flex flex-wrap py-1">
+                        <div class="col-12 col-lg-6 m-0 p-0">
+                            <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                                <img :src="item.ruta" class="rounded-start" style="height:160px;max-width:100%; width:auto;" alt="...">
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 m-0 p-0">
+                            <div class="card-body ">
+                                <h5 class="card-title fw-bold fs-6">{{item.nombre}}</h5>
+                                <div style="height:150px !important;" class="card-text text-especificaciones truncate-text" v-html="item.descripcion">
+                                 
+                                </div>                              
+                            </div>                          
+                        </div>                       
+                    </div>
+                    <div class="w-100 d-flex justify-content-end py-2 px-2">
+                        <button class="btn btn-primary btn-sm">
+                            Ver más
+                        </button>
+                    </div>
+                </div>        
+            </div>
+            <div v-else class="p-0 m-0">
+                @* <h4 class="px-0 fw-bold my-2">Sin productos homologados disponibles</h4> *@
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle-->
+    <div class="modal fade" ref="modalDetalle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark py-1">
+                    <h1 class="modal-title fs-2 text-white ">{{certificacion}}</h1>
+                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="">                   
+                        <img class="foto-derecha" :src="srcLogoMini" style="max-height:200px;width:auto" />
+                        <div v-html="contenido"></div>
+                    </div>
+                  
+
+                    <div class="w-100 h-100 table-responsive rounded-4 p-3 d-flex justify-content-center flex-column align-items-center">
+                        <table class="rounded-2 table-bordered" v-if="array.certificados.some(i => i.productos.length > 0 && i.certificados.length > 0)">
+                            <thead class="fs-6-5  bg-gray-light p-3">
+                                <tr class="p-3">
+                                    <th class="p-2">Producto</th>
+                                    <th class="p-2">Certificado/Dictamen/Sello</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fs-6-5">
+                                <tr v-for="item in array.certificados" v-show="item.productos && item.productos.length > 0 && item.certificados && item.certificados.length > 0">
+                                    <td class="p-2">
+                                        <ul class="p-0 m-0">
+                                            <li class="list-unstyled" v-if="item.productos && item.productos.length > 0" v-for="i in item.productos">{{i.producto}}</li>
+                                        </ul>
+                                    </td>
+                                    <td class="p-2">
+                                        <ul class="p-0 m-0">
+                                            <li class="list-unstyled" v-if="item.certificados && item.certificados.length > 0" v-for="i in item.certificados">
+                                                <a :href="i.href" target="_blank" download class="bi bi-download text-decoration-none" :title="i.certificados">&nbsp;{{i.titulo}}</a>
+                                            </li>
+                                        </ul>          
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="w-100 my-2"></div>
+
+                        <table class="rounded-2 table-bordered" v-if="array.certificados.some(i => i.productos.length === 0 && i.certificados.length > 0)">
+                            <thead class="fs-6-5  bg-gray-light p-3">
+                                <tr class="p-3">
+                                    <th class="p-2">Certificado/Dictamen/Sello</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fs-6-5" >
+                                <tr v-for="item in array.certificados" v-show="item.productos && item.productos.length === 0 && item.certificados && item.certificados.length > 0">
+                                    <td class="p-2">
+                                        <ul class="p-0 m-0">
+                                            <li class="list-unstyled" v-if="item.certificados && item.certificados.length > 0" v-for="i in item.certificados">
+                                                <a :href="i.href" target="_blank" download class="bi bi-download text-decoration-none" :title="i.certificados">&nbsp;{{i.titulo}}</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+
+<script src="~/js/views/productos-homologados.js" asp-append-version="true"></script>

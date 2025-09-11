@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Misión";
+}
+
+<section>
+    <div class="container-sm my-2 mt-3 ">
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="w-100 d-flex justify-content-center">
+                <div class="rounded-4 card-nosotros  px-3  px-md-5">
+                    @Html.Raw(ViewBag.mision)
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="w-100 d-flex justify-content-center mt-3">
+                <div class="rounded-4 card-nosotros  px-3  px-md-5">
+                    @Html.Raw(ViewBag.vision)
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="w-100 d-flex justify-content-center mt-3">
+                <div class="rounded-4 card-nosotros  px-3  px-md-5">
+                    @Html.Raw(ViewBag.valores)
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
+
+<script src="~/js/views/mision.js" asp-append-version="true"></script>

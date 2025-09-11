@@ -1,0 +1,70 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost/redosel"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "RedOsel": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhos/redosel",
+      "environmentVariables": {
+        //"ConnectionString": "Data Source=localhost;Initial Catalog=oselTests;User ID=sa;Password=PIMH1992;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        //"ConnectionString": "Data Source=13.92.211.136,1438;Initial Catalog=pinturasOselProduccion;User ID=sa;Password=1nT2l34s5r;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "ed958c2689eb6b157182632ec589f704f12222887847cafd5a77779e3e4e46ba54e94741b94d139e131e214bab7261afb4b0b3e0362773943237fec61e91cbd3",
+        "JWT_REQUIRED_HTTPS": "false",
+        "JWT_ISSUER": "http://localhost/redosel",
+        "JWT_AUDIENCE": "http://localhost/redosel",
+        "RateLimitDevelopment": "99999",
+        "RateLimitProduction": "9999"
+      },
+      "applicationUrl": "http://localhost/redosel"
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost/redosel",
+      "environmentVariables": {
+        //"ConnectionString": "Data Source=localhost,1438;Initial Catalog=oselTests;User ID=sa;Password=PIMH1992;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ConnectionString": "Data Source=DESKTOP-DGB6A4P\\SQLEXPRESS;Initial Catalog=IntelimaticaDB;User ID=sa;Password=proyectos06;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM\",
+        //"ConnectionString": "Data Source=13.92.211.136,1438;Initial Catalog=pinturasOselProduccion;User ID=sa;Password=1nT2l34s5r;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        //"ConnectionString": "Data Source=3.20.22.79,1433;Initial Catalog=admon_pinturasOsel;User ID=oseluser;Password=webosel2021;Connect Timeout=180; Integrated Security=False;TrustServerCertificate=True;Encrypt=True;Application Name=HPM",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "ed958c2689eb6b157182632ec589f704f12222887847cafd5a77779e3e4e46ba54e94741b94d139e131e214bab7261afb4b0b3e0362773943237fec61e91cbd3",
+        "JWT_REQUIRED_HTTPS": "true",
+        "JWT_ISSUER": "http://localhost/redosel",
+        "JWT_AUDIENCE": "http://localhost/redosel",
+        "RateLimitDevelopment": "99999",
+        "RateLimitProduction": "9999",
+        "ExpireApi": "10",
+        "ExpireRefresh": "240"
+      }
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/redosel",
+      "sslPort": 0
+    },
+    "iisExpress": {
+      "applicationUrl": "http://localhost:37512",
+      "sslPort": 0
+    }
+  }
+}

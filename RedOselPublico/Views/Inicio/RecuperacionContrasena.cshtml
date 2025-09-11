@@ -1,0 +1,90 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinturas Osel - Recuperación de contraseña</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/alertas.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+</head>
+<body class="header-table vh-100" id="appRecupera">
+    <div class="text-center cargando-c fondoCargando-2">
+        <div class="loader d-flex h-100 w-100 align-items-center justify-content-center">
+            <div class="container-c loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center">
+        <div class="vh-100 w-100 d-flex justify-content-center align-items-center">
+            <div class="card rounded-4 shadow-osel" style="max-width:400px;">
+                <div class="card-body p-5 bg-light-subtle rounded-4">
+                    <a class="navbar-brand">
+                        <h1 class="fw-bold">Red Osel</h1>
+                    </a>
+                    <h4 class="text-dark text-nowrap mb-5" v-cloak>{{value.titulo}}</h4>
+                    <div class="my-2" v-show="show.correo">
+                        <label class="fw-bold w-100 text-start">Correo electrónico actual</label>
+                        <input class="form-control-plaintext" readonly v-model="value.correo" type="text" />
+                    </div>
+                    <button class="btn btn-outline-success" v-show="show.correo && !show.inputCorreo" @@click="activaCorreo">
+                        <span class="bi bi-arrow-down-up"></span>
+                        Cambiar correo electrónico
+                    </button>
+                    <div class="my-2" v-show="show.correo && show.inputCorreo">
+                        <label class="fw-bold w-100 text-start">Correo electrónico nuevo</label>
+                        <input class="form-control" type="search" v-model="value.nuevoCorreo"/>
+                    </div>
+                    <hr />
+                    <div class="mt-3">
+                        <label class="text-dark fw-bold w-100 text-start">Nueva Contraseña</label>
+                        <input type="password" class="form-control" autocomplete="off" required v-model="value.password" />
+                    </div>
+                    <div class="mt-2">
+                        <label class="fw-bold text-dark w-100 text-start">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" autocomplete="off" required v-model="value.confirma" :disabled="value.password.length === 0" />
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button type="button" class="font-weight-bold mt-3 btn btn-primary text-white" @@click="actualiza">
+                                <i class="bi bi-check-circle"></i>&nbsp;
+                                Enviar
+                            </button>
+                            <button v-if="show.salir" type="button" class="font-weight-bold mt-3 btn btn-secondary text-white" @@click="salir">
+                                <i class="bi bi-house"></i>&nbsp;
+                                Salir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/vue/vue.global.prod.js"></script>
+    <script src="~/js/views/recupera.js" asp-append-version="true"></script>
+
+
+
+    <partial name="Alertas" />
+
+</body>
+</html>

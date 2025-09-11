@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.title = "Ciudades";
+}
+
+<main id="appCiudades" class="row w-100 h-100 p-0 m-0">
+    <div class="div-bg col-12 row">
+        <div class="col-3 col-md-1 p-2">
+            <div class="card ico-osel">
+                <i class="bg-osel icon icon-gradient lnr lnr-location"></i>
+            </div>
+        </div>
+        <div class="col-9 col-md-11 p-2">
+            <h5>Ciudades</h5>
+            <text>Administración de ciudades</text>
+        </div>
+    </div>
+
+    <!--Inicio acordeón-->
+    <div id="acordeonProductos" class="col-12">
+        <div class="card">
+            <div class="card-header bg-blue-dark"
+                 style="cursor:pointer"
+                 @@click="abreAcordion"
+                 data-toggle="collapse"
+                 data-target="#collapseOne"
+                 aria-expanded="true"
+                 aria-controls="collapseOne">
+                <div class="row">
+                    <div class="col-11">
+                        <h5 class="m-0 text-white">Filtros</h5>
+                    </div>
+                    <div class="col-1">
+                        <span  :class="icono" class="text-white" id="accordion-arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#acordeonProductos" aria-describedby="accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text btn-prepend-primary" id="btnGroupAddon2">Nombre ciudad</div>
+                                </div>
+                                <input type="text" class="form-control" v-model="value.ciudad" aria-label="Input group" aria-describedby="btnGroupAddon2">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text btn-prepend-primary">Estados</div>
+                                </div>
+                                <select class="form-control" v-model="ddl.estado">
+                                    <option :value="0">Seleccione</option>
+                                    <option v-for="estado in array.estados" :key="estado.id_clave" :value="estado.id_clave">
+                                        {{ estado.cadena }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="btn btn-secondary" @@click="limpiar">
+                                <span class="lnr lnr-undo">&nbsp;</span>
+                                Limpiar filtros
+                            </button>
+                            <button class="btn btn-prepend-primary ml-2" @@click="getCiudades">
+                                <span class="lnr lnr-magnifier">&nbsp;</span>
+                                Consultar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin acordeón-->
+
+    <div class="col-12">
+        <div class="w-100 d-flex justify-content-between">
+            <button class="btn btn-prepend-primary" @@click="agregarCiudad">
+                <span class="bi bi-plus-square">&nbsp;</span>
+                Agregar ciudad
+            </button>
+            <select class="form-control w-auto d-inline-flex mt-2" title="Cantidad de Elementos en Tabla" @@change="cambiaPaginacion()" v-model="ddl.paginacion">
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="table-responsive mt-2">
+            <table class="table table-striped" v-cloak>
+                <thead class="header-table">
+                    <tr>
+                        <th>Acción</th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                               Ciudad
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.ciudad.iconoAsc" role="button" @@click="eligeFiltro(1)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.ciudad.iconoDesc" role="button" @@click="eligeFiltro(1, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Estado
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.estado.iconoAsc" role="button" @@click="eligeFiltro(2)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.estado.iconoDesc" role="button" @@click="eligeFiltro(2, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between align-items-end w-100">
+                                Estatus
+                                <div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.estatus.iconoAsc" role="button" @@click="eligeFiltro(3)"></button>
+                                    </div>
+                                    <div class="w-100" style="max-height:13px;">
+                                        <button class="bg-transparent text-light border-0 p-0 m-0" :disabled="filtered.length === 0" :class="sorted.estatus.iconoDesc" role="button" @@click="eligeFiltro(3, false)"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="ciudad in filtered" :key="ciudad.id">
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm border-0 bg-transparent" title="Detalle ciudad" @@click="getCiudad(ciudad)">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <button class="btn btn-sm    border-0 bg-transparent" title="Eliminar ciudad" @@click="ciudadElimina(ciudad)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                        <td>{{ ciudad.ciudad }}</td>
+                        <td>{{ ciudad.estado }}</td>
+                        <td>{{ciudad.estatus ? 'Activa': 'Inactiva'}}</td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+
+        <div v-if="filtered.length === 0">
+            <h4>Sin ciudades disponibles</h4>
+        </div>
+        <div v-else>
+            <ul class="pagination pagination-sm justify-content-center">
+                <li class="page-item">
+                    <button type="button" class="page-link"
+                            v-on:click="onClickFirstPage"
+                            :disabled="isInFirstPage"
+                            title="Primero">
+
+                        <i class="bi bi-chevron-bar-left"></i>
+                    </button>
+                </li>
+
+                <li class="page-item">
+                    <button type="button" class="page-link"
+                            v-on:click="onClickPreviousPage"
+                            :disabled="isInFirstPage"
+                            title="Anterior">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                </li>
+                <!-- Visible Buttons Start -->
+                <li v-for="page in pages"
+                    class="page-item"
+                    :class="{ active: isPageActive(page.name) || page.isDisabled == true}">
+                    <button type="button" class="page-link"
+                    @* :disabled="page.isDisabled" *@
+                            :class="{ active: isPageActive(page.name) || page.isDisabled == true}"
+                            v-on:click="onClickPage(page.name)"
+                            title="Siguiente">
+                        {{ page.name }}
+                    </button>
+                </li>
+                <!-- Visible Buttons End -->
+                <li class="page-item">
+                    <button type="button" class="page-link"
+                            v-on:click="onClickNextPage"
+                            :disabled="isInLastPage"
+                            title="Siguiente">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </li>
+                <li class="page-item">
+                    <button type="button" class="page-link"
+                            v-on:click="onClickLastPage"
+                            :disabled="isInLastPage"
+                            title="Último">
+                        <i class="bi bi-chevron-bar-right"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <ciudad 
+            :estados="array.estados"
+            @@nueva-ciudad="nuevaCiudad"
+            :id-ciudad="idCiudad"
+            :nuevo="nuevaCiudad"
+            @@cancelar="cierraModal"
+    ></ciudad>
+</main>
+
+
+
+<partial name="Componentes/Componente_Ciudad" />
+
+
+<script src="~/js/views/ciudades.js" asp-append-version="true"></script>

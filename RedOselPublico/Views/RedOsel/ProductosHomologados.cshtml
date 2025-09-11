@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Productos Homologados";
+}
+
+<section id="appAvisos" class="h-100">
+    <div class="text-center pt-4">
+        <div class="title-container">
+            <span class="border-text fw-bolder ">Productos Homologados</span>
+            <div class="border-box"></div>
+        </div>
+        <p class="text-normal m-0 fs-7 text-center">
+        </p>
+    </div>
+
+
+    <div class="container py-2 mt-0 mt-5 mb-2 " id="appHomologaciones">
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-md-start align-items-center gap-11">
+@*             <a href="~/RedOsel/Productos" class="col-6 text-center text-decoration-none align-items-center d-flex flex-column " role="link" target="_self" style="max-width:200px;">
+                <img src="~/imagenes/manuales/certificados.jpg" class="icon-circle-osel rounded-img px-0 img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span class="fw-bold text-icon  fs-6-5 m-0 px-2 py-1 border-osel color-text-osel text-uppercase">
+                    Certificados, Dictámenes, Sellos y Homologaciones
+                </span>
+            </a>
+            <a role="link" href="~/Documentos/Comparativo 2024 - laminas-actualizadas Osel categorias.pdf" target="_blank"
+               class="col-6 text-center text-decoration-none d-flex flex-column align-items-center" style="max-width:200px;">
+                <img src="~/imagenes/manuales/comparativo.jpg" class="icon-circle-osel rounded-img px-0 img-fluid rounded-circle mb-3" alt="Imagen 2" />
+                <span class="border-osel text-icon fw-bold m-0 px-2 py-1 fs-6-5  color-text-osel">
+                    COMPARATIVAS EMULSIONADAS
+                </span>              
+            </a> *@
+            <template v-for="item in menu" v-cloak>
+                <a :href="urlContent(item)"
+                   class="col-6 text-center text-decoration-none align-items-center d-flex flex-column " 
+                    role="link"
+                   :target="target(item)"
+                    style="max-width:200px;">
+                    <img :src="urlImage(item)"
+                        class="icon-circle-osel rounded-img px-0 img-fluid rounded-circle mb-3"
+                         :alt="item.img_descripcion" />
+                    <span class="fw-bold text-icon  fs-6-5 m-0 px-2 py-1 border-osel color-text-osel text-uppercase">
+                        {{ item.descripcion }}
+                    </span>
+                </a>
+            </template>
+
+        </div>
+    </div>
+</section>
+
+<script src="~/js/views/homologaciones.js" asp-append-version="true"></script>

@@ -1,0 +1,52 @@
+﻿
+
+<template id="compoCiudad">
+        <!-- Modal -->
+    <div class="modal fade" ref="modalCiudad" data-backdrop="static" data-keyboard="false" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{tituloModal}}</h5>
+                    <button type="button" class="close" @@click="cierraModal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <label class="label-primary m-0">Estado</label>
+                            <select v-model="ddl.estado" class="form-control  select-custom-po p-1" :disabled="Number(this.idEstado) !== 0">
+                                <option value="0">Seleccione</option>
+                                <option v-for="item in estados" :value="item.id_clave">{{item.cadena}}</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="label-primary m-0">Descripción</label>
+                            <input type="text" v-model="value.descripcion" class="cg-input-adicional p-1" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="d-flex h-100 w-100 align-items-end">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" v-model="check.estatus" ref="chkActivo" />
+                                    <label class="custom-control-label" @@click="$refs.chkActivo.click()">Activo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="guardar">
+                        <span class="bi bi-check-circle"></span>
+                        Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary ml-1" @@click="cierraModal">
+                        <span class="bi bi-x-circle"></span>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="~/js/componente/ciudades.js" asp-append-version="true"></script>

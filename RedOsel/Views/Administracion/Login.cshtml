@@ -1,0 +1,132 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval';
+        style-src 'self' 'unsafe-inline' https://cdn.linearicons.com/free/1.0.0/;
+        img-src 'self' data:;
+        font-src 'self' https://cdn.linearicons.com/free/1.0.0/;
+        connect-src 'self';
+        frame-src 'self';
+        object-src 'none';
+    ">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Red Osel - Login</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+</head>
+
+<body id="appLogin">
+    <!--<div class="text-center cargando fondoCargando">
+        <div class="loader">
+            <div class="spinner-grow cargando text-white" style="width: 5rem; height: 5rem;" role="status">
+            </div>
+            <span class="cargando textoCargando text-white h4">Cargando...</span>
+        </div>
+    </div>-->
+
+    <div class="text-center cargando-c fondoCargando-2">
+        <div class="loader">
+            <div class="container-c loader">
+                <div class="half"></div>
+                <div class="half"></div>
+            </div>
+        </div>
+    </div>
+
+    <section  class="mw-100  carousel-full">
+        <div class="row">
+            <div class="col-12 bg-login p-0 m-0">
+                <div class="text-center col-md-12 col-lg-10">
+                    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                        <div class="col-lg-12 img-login"><img src="~/lib/administracion/images/logo-inverse.png"></div>
+                        <h6 class="text-white-logins"> Inicia sesión en tu cuenta Red Osel </h6>
+                        <div class="divider"></div>
+                        <div class="class-log" style=" opacity: .8;">
+                            <form novalidate class="" method="post" id="formLogin" action="#">
+                                <div class="row m-0 m-bottom">
+                                    <div class="col-md-6">
+                                        <div class="cg-label-input-login">
+                                            <input v-model="value.usuario" type="text" required autocomplete="username" />
+                                            <span class="highlight"></span><span class="barwhite"></span><label class="cg-label-input">Usuario</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="cg-label-input-login">
+                                            <input v-model="value.password" type="password" required autocomplete="new-password" @@keypress.enter="acceder"  />
+                                            <span class="highlight"></span><span class="barwhite"></span><label class="cg-label-input">Contraseña</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!---->
+                                <!---->
+                                <div class="aling-buttons ng-star-inserted">
+                                    <button type="button" class="btn btn-light btn-lg btn-txt btn-width" @@click="acceder"><span class="lnr lnr-enter">&nbsp;</span>Acceder </button><br /><br />
+                                    <button class="btn btn-outline-light btn-lg btn-txt btn-width" type="button" @@click="abreModalRestablecer"><span class="lnr lnr-warning">&nbsp;</span>Recuperar contraseña </button>
+
+                                </div>
+                                <!---->
+                                <!---->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_restablecer" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-login text-white pt-0" style="border: 2px solid #034d77;">
+                <div class="modal-header border-0">
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center mb-5" id="staticBackdropLabel">
+                        <img class="img-fluid" src="~/lib/administracion/images/icono-recuperar-password.png"><br /><br />
+                        <span>¿Olvidaste tu contraseña?</span>
+                    </h5>
+                    <label>Ingresa tu usuario</label>
+                    <input class="form-control w-100" v-model="value.usuarioRecupera" autocomplete="off" formnovalidate="" style="width:100% !important;max-width:100% !important">
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-info" @@click="enviaSolicitud"><span class="lnr lnr-rocket">&nbsp;</span>Enviar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="lnr lnr-cross-circle">&nbsp;</span>Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <partial name="Alertas"/>
+
+
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/vue/vue.global.prod.js"></script>
+    <script src="~/js/views/login.js" asp-append-version="true"></script>
+</body>
+</html>
+
+
